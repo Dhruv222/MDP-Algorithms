@@ -286,31 +286,29 @@ def UpdateArena(robot):
     #Prevent Wall Errors
     if(-1 < (mul['col'][2]**2)*(robot.bottomRight['col'] + mul['col'][2]*DistanceSensor)+(mul['row'][2]**2)*(robot.bottomRight['row'] + mul['row'][2]*DistanceSensor) < 20 and SensorData['LeftBehind'] != 0 and EmptyArena[robot.bottomRight['row']+mul['row'][2]*i][robot.bottomRight['col'] + mul['col'][2]*i] != 2):
         EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] = 1
+    
+
+def PrintMap():
+    for i in range(len(EmptyArena)):
+        print EmptyArena[i]
+    print
 
 robot = ArduinoRobot()
 
-for i in range(len(EmptyArena)):
-    print EmptyArena[i]
-print
+PrintMap()
 CheckSensor()
 UpdateArena(robot)
-for i in range(len(EmptyArena)):
-    print EmptyArena[i]
-print
+PrintMap()
+
 MoveRobot(robot, 18)
 CheckSensor()
 UpdateArena(robot)
-for i in range(len(EmptyArena)):
-    print EmptyArena[i]
-print
-TurnRobot(robot, "right")
+PrintMap()
 
-MoveRobot(robot, 12)
-for i in range(len(EmptyArena)):
-    print EmptyArena[i]
-print
+TurnRobot(robot, "right")
+MoveRobot(robot, 10)
+PrintMap()
+
 CheckSensor()
 UpdateArena(robot)
-for i in range(len(EmptyArena)):
-    print EmptyArena[i]
-print
+PrintMap()
