@@ -13,11 +13,13 @@ SensorMax = {
 }
 
 MaxSensorMax = 5
-SensorMaxValues = []
-SensorArray = []
+
+
 
 
 def getSensorArray(orientation, CurrPos):
+    SensorMaxValues = []
+    SensorArray = []
     topRight = {
         'row': CurrPos['row'],
         'col': CurrPos['col']
@@ -35,11 +37,11 @@ def getSensorArray(orientation, CurrPos):
         'col': CurrPos['col']
     }
     Arena[topRight['row']][topRight['col']] = 4
-    print Arena[topRight['row']][topRight['col']]
     Arena[topLeft['row']][topLeft['col']] = 4
     Arena[bottomRight['row']][bottomRight['col']] = 4
     Arena[bottomLeft['row']][bottomLeft['col']] = 4
 
+    PrintMap()
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -111,7 +113,6 @@ def getSensorArray(orientation, CurrPos):
         ['RightAhead', 'RightBehind','skip','skip','LeftBehind', 'LeftAhead', 'FrontLeft', 'FrontRight'],
         ['FrontLeft', 'FrontRight', 'RightAhead', 'RightBehind','skip','skip','LeftBehind', 'LeftAhead']
     ]
-    print SensorAllDirection[orientation].index('LeftBehind')
     SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('LeftBehind')])
     SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('LeftAhead')])
     SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('FrontLeft')])
@@ -125,6 +126,3 @@ def PrintMap():
     for i in range(len(Arena)):
         print Arena[i]
     print
-
-print getSensorArray(0, {'row':10,'col':7})
-PrintMap()
