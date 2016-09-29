@@ -365,6 +365,8 @@ def CalculateMove(robot):
     if(LeftSideEmpty(robot)):
         print "Turn Left"
         TurnRobot(robot, "left")
+        CheckSensor(robot)
+        UpdateArena(robot)
         MoveRobot(robot, 1)
     elif(FrontSideEmpty(robot)):
         print "Move Forward"
