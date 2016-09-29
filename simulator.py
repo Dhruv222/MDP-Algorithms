@@ -150,4 +150,4 @@ def PrintMap():
         print Arena[i]
     print
 
-PrintMap()
+#PrintMap()

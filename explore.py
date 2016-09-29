@@ -8,7 +8,7 @@ import simulator
 #DataChannel = Serial("",)
 
 
-itr = int(sys.argv[1])
+#itr = int(sys.argv[1])
 
 Arena = generate()
 EmptyArena=[[0 for i in range(17)] for j in range(22)]
@@ -348,26 +348,7 @@ def FrontSideEmpty(robot):
     else:
         return EmptyArena[robot.topLeft['row']][robot.topLeft['col']-1] != 1 and EmptyArena[robot.topRight['row']][robot.topRight['col']-1] != 1
 
-def Visited(robot, direction):
-    if(direction == 'left'):
-        if(robot.orientation == 0):
-            return EmptyArena[robot.topLeft['row']][robot.topLeft['col']-1] == 2 and EmptyArena[robot.bottomLeft['row']][robot.bottomLeft['col']-1] == 2
-        elif(robot.orientation == 1):
-            return EmptyArena[robot.topLeft['row']-1][robot.topLeft['col']] == 2 and EmptyArena[robot.bottomLeft['row']-1][robot.bottomLeft['col']] == 2
-        elif(robot.orientation == 2):
-            return EmptyArena[robot.topLeft['row']][robot.topLeft['col']+1] == 2 and EmptyArena[robot.bottomLeft['row']][robot.bottomLeft['col']+1] == 2
-        else:
-            return EmptyArena[robot.topLeft['row']+1][robot.topLeft['col']] == 2 and EmptyArena[robot.bottomLeft['row']+1][robot.bottomLeft['col']] == 2
-    if(direction == 'back'):
-        if(robot.orientation == 0):
-            return EmptyArena[robot.bottomLeft['row']+1][robot.bottomLeft['col']] == 2 and EmptyArena[robot.bottomRight['row']+1][robot.bottomRight['col']] == 2
-        elif(robot.orientation == 1):
-            return EmptyArena[robot.bottomLeft['row']][robot.bottomLeft['col']-1] == 2 and EmptyArena[robot.bottomRight['row']][robot.bottomRight['col']-1] == 2 
-        elif(robot.orientation == 2):
-            return EmptyArena[robot.bottomLeft['row']-1][robot.bottomLeft['col']] == 2 and EmptyArena[robot.bottomRight['row']-1][robot.bottomRight['col']] == 2 
-        else:
-            return EmptyArena[robot.bottomLeft['row']][robot.bottomLeft['col']+1] == 2 and EmptyArena[robot.bottomRight['row']][robot.bottomRight['col']+1] == 2  
-        
+
 
                 
 
@@ -397,7 +378,8 @@ def CalculateMove(robot):
 
 
 robot = ArduinoRobot()
-
-for i in range(itr):
-    print i+1
+count =0
+while(1 == 1) :
+    print count+1
+    count+=1
     CalculateMove(robot)
