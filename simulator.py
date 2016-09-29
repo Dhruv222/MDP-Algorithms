@@ -149,3 +149,5 @@ def PrintMap():
     for i in range(len(Arena)):
         print Arena[i]
     print
+
+PrintMap()
