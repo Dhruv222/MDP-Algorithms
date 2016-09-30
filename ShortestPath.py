@@ -44,22 +44,22 @@ def genArena():
     arena[17][1] = 0
     arena[17][2] = 0
     
-    print("\n")
+    print "\n"
     return arena
 
 def printArena(arena):
-    print("| -  -  -  -  -  -  -  -  -  -  -  -  -  -  - |")
+    print "| -  -  -  -  -  -  -  -  -  -  -  -  -  -  - |"
     for i in range(y_max):
-        print("|", end = "")
+        print "|",
         for j in range(x_max):
             if arena[i][j] == -1:
-                print("-1 ", end = "")
+                print "-1 ",
             else:
-                print(" ", end = "")
-                print(arena[i][j], end = "")
-                print(" ", end = "")
+                print " ",
+                print arena[i][j],
+                print " ",
         print("|")
-    print("| -  -  -  -  -  -  -  -  -  -  -  -  -  -  - |")
+    print "| -  -  -  -  -  -  -  -  -  -  -  -  -  -  - |"
 
 StartPos = {'row':18,'col':1}
 class ArduinoRobot:
@@ -275,8 +275,8 @@ def shortestPath():
     finalPath = astar(arena,aStarQueue)
 
     if (finalPath == None):
-        print("No possible path")
-    else: print(finalPath)
+        print "No possible path"
+    else: print finalPath
 
     for i in range(len(finalPath)):
          yFinal = finalPath[i][1]
