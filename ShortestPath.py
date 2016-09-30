@@ -48,18 +48,16 @@ def genArena():
     return arena
 
 def printArena(arena):
-    print "| -  -  -  -  -  -  -  -  -  -  -  -  -  -  - |"
+    print "| - - - - - - - - - - - - - - - |"
     for i in range(y_max):
         print "|",
         for j in range(x_max):
             if arena[i][j] == -1:
                 print "-1 ",
             else:
-                print " ",
                 print arena[i][j],
-                print " ",
-        print("|")
-    print "| -  -  -  -  -  -  -  -  -  -  -  -  -  -  - |"
+        print "|"
+    print "| - - - - - - - - - - - - - - - |"
 
 StartPos = {'row':18,'col':1}
 class ArduinoRobot:
