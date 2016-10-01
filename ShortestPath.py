@@ -1,21 +1,17 @@
+#############################################################
+## enter shortestPath() to start calculating shortest path ##
+#############################################################
+
 import random
 import math
 import operator
 x_max = 15
 y_max = 20
-
-class Pos:
-    x = 0
-    y = 0
     
-startPos = Pos()
-startPos.x = 1
-startPos.y = 18
+startPos = {'x':1,'y':18}
+goalPos  = {'x':14,'y':0}
 
-goalPos = Pos()
-goalPos.x = 14
-goalPos.y = 0
-
+# random arena generator
 def genArena():
     arena=[[0 for i in range(x_max)] for j in range(y_max)]
     for i in range(y_max):
@@ -47,6 +43,7 @@ def genArena():
     print "\n"
     return arena
 
+# print arena
 def printArena(arena):
     print "| - - - - - - - - - - - - - - - |"
     for i in range(y_max):
@@ -59,232 +56,16 @@ def printArena(arena):
         print "|"
     print "| - - - - - - - - - - - - - - - |"
 
-StartPos = {'row':18,'col':1}
-class ArduinoRobot:
-    orientation = 0
-    
-    CurrPos         = {'col':StartPos['col'],'row':StartPos['row']}
-    topRight        = {'col':StartPos['col'],'row':StartPos['row']}
-    topLeft         = {'col':StartPos['col']-1,'row':StartPos['row']}
-    bottomRight      = {'col':StartPos['col'],'row':StartPos['row']+1}
-    bottomLeft     = {'col':StartPos['col']-1,'row':StartPos['row']+1}
-    bumpLeftPos     = {'col':StartPos['col']-1,'row':StartPos['row']-1}
-    bumpRightPos    = {'col':StartPos['col'],'row':StartPos['row']-1}
-
-    def UpdateCornerPositions(self):
-        orientation = self.orientation
-        CurrPos = self.CurrPos
-        if(orientation == 0):
-            self.topRight['col'] = CurrPos['col']
-            self.topRight['row'] = CurrPos['row']
-
-            self.topLeft['col'] = CurrPos['col']-1
-            self.topLeft['row'] = CurrPos['row']
-
-            self.bottomRight['col'] = CurrPos['col']
-            self.bottomRight['row'] = CurrPos['row']+1
-
-            self.bottomLeft['col'] = CurrPos['col']-1
-            self.bottomLeft['row'] = CurrPos['row']+1
-
-            self.bumpLeftPos['col'] = CurrPos['col']-1
-            self.bumpLeftPos['row'] = CurrPos['row']-1
-
-            self.bumpRightPos['col'] = CurrPos['col']
-            self.bumpRightPos['row'] = CurrPos['row']-1
-        elif(orientation == 1):
-
-            self.topLeft['col'] = CurrPos['col']
-            self.topLeft['row'] = CurrPos['row']
-
-            self.bottomLeft['col'] = CurrPos['col']-1
-            self.bottomLeft['row'] = CurrPos['row']
-       
-            self.bottomRight['col'] = CurrPos['col']-1
-            self.bottomRight['row'] = CurrPos['row']+1
-
-            self.topRight['col'] = CurrPos['col']
-            self.topRight['row'] = CurrPos['row'] + 1
-
-            self.bumpLeftPos['col'] = CurrPos['col']+1
-            self.bumpLeftPos['row'] = CurrPos['row']
-
-            self.bumpRightPos['col'] = CurrPos['col']+1
-            self.bumpRightPos['row'] = CurrPos['row']+1
-
-        elif(orientation == 2):
-            self.bottomLeft['col'] = CurrPos['col']
-            self.bottomLeft['row'] = CurrPos['row']
-
-            self.bottomRight['col'] = CurrPos['col']-1
-            self.bottomRight['row'] = CurrPos['row']
-
-            self.topRight['col'] = CurrPos['col']-1
-            self.topRight['row'] = CurrPos['row']+1
-
-            self.topLeft['col'] = CurrPos['col']
-            self.topLeft['row'] = CurrPos['row']+1
-
-            self.bumpLeftPos['col'] = CurrPos['col']
-            self.bumpLeftPos['row'] = CurrPos['row']+2
-
-            self.bumpRightPos['col'] = CurrPos['col']-1
-            self.bumpRightPos['row'] = CurrPos['row']+2
-        else:
-            self.bottomRight['col'] = CurrPos['col']
-            self.bottomRight['row'] = CurrPos['row']
-
-            self.topRight['col'] = CurrPos['col']-1
-            self.topRight['row'] = CurrPos['row']
-
-            self.topLeft['col'] = CurrPos['col']-1
-            self.topLeft['row'] = CurrPos['row']+1
-
-            self.bottomLeft['col'] = CurrPos['col']
-            self.bottomLeft['row'] = CurrPos['row']+1
-            
-            self.bumpLeftPos['col'] = CurrPos['col']-2
-            self.bumpLeftPos['row'] = CurrPos['row']+1
-
-            self.bumpRightPos['col'] = CurrPos['col']-2
-            self.bumpRightPos['row'] = CurrPos['row']
-
-def TurnLeft(robot,arena):
-    robot.orientation = (4 + robot.orientation - 1) % 4
-    robot.UpdateCornerPositions()
-    arena = updateArena(arena,robot)
-    return arena
-
-def TurnRight(robot,arena):
-    robot.orientation = (robot.orientation + 1) % 4
-    robot.UpdateCornerPositions()
-    arena = updateArena(arena,robot)
-    return arena
-
-def MoveRobot(robot,arena):
-    pastPos = robot.CurrPos
-    if(robot.orientation==0):
-        robot.CurrPos['row']-=1
-    elif(robot.orientation==1):
-        robot.CurrPos['col']+=1
-    elif(robot.orientation==2):
-        robot.CurrPos['row']+=1
-    else:
-        robot.CurrPos['col']-=1
-    robot.UpdateCornerPositions()
-    arena = updateArena(arena,robot)
-    return arena
-
-def updateArena(arena,robot):
-    for i in range(y_max):
-        for j in range(x_max):
-            if robot.orientation==0:
-                if ((i==robot.topRight['row'] and j==robot.topRight['col'])
-                    or (i==robot.topLeft['row'] and j==robot.topLeft['col'])
-                    or (i==robot.bottomLeft['row'] and j==robot.bottomLeft['col'])
-                    or (i==robot.bottomRight['row'] and j==robot.bottomRight['col'])):
-                        arena[i][j] = "^"
-                elif arena[i][j] != "X":
-                    arena[i][j] = 0
-            elif robot.orientation==1:
-                if ((i==robot.topRight['row'] and j==robot.topRight['col'])
-                    or (i==robot.topLeft['row'] and j==robot.topLeft['col'])
-                    or (i==robot.bottomLeft['row'] and j==robot.bottomLeft['col'])
-                    or (i==robot.bottomRight['row'] and j==robot.bottomRight['col'])):
-                        arena[i][j] = ">"
-                elif arena[i][j] != "X":
-                    arena[i][j] = 0
-            elif robot.orientation==2:
-                if ((i==robot.topRight['row'] and j==robot.topRight['col'])
-                    or (i==robot.topLeft['row'] and j==robot.topLeft['col'])
-                    or (i==robot.bottomLeft['row'] and j==robot.bottomLeft['col'])
-                    or (i==robot.bottomRight['row'] and j==robot.bottomRight['col'])):
-                        arena[i][j] = "V"
-                elif arena[i][j] != "X":
-                        arena[i][j] = 0
-            elif robot.orientation==3:
-                if ((i==robot.topRight['row'] and j==robot.topRight['col'])
-                    or (i==robot.topLeft['row'] and j==robot.topLeft['col'])
-                    or (i==robot.bottomLeft['row'] and j==robot.bottomLeft['col'])
-                    or (i==robot.bottomRight['row'] and j==robot.bottomRight['col'])):
-                        arena[i][j] = "<"
-                elif arena[i][j] != "X":
-                        arena[i][j] = 0
-    return arena
-
-def detectBump(robot,arena):
-    if ((arena[robot.bumpLeftPos['row']][robot.bumpLeftPos['col']]==0 and
-        arena[robot.bumpRightPos['row']][robot.bumpRightPos['col']]==0) and
-        not(robot.orientation == 1 and robot.CurrPos['col'] == (x_max - 1)) and
-        not(robot.orientation == 2 and robot.CurrPos['row'] == (y_max - 2)) and
-        not(robot.orientation == 3 and robot.CurrPos['col'] == 1)):
-        return False;
-    else: return True
-
-def findPossiblePath(arena):
-    arenaP = arena
-    for i in range(0,y_max-1):
-        for j in range(1,x_max):
-            if (arenaP[i][j] in {0,"0"} and
-                arenaP[i+1][j] in {0,"0"} and
-                arenaP[i][j-1] in {0,"0"} and
-                arenaP[i+1][j-1] in {0,"0"}):
-                    arenaP[i][j] = "0"
-                    arenaP[i+1][j] = "0"
-                    arenaP[i][j-1] = "0"
-                    arenaP[i+1][j-1] = "0"
-    return arenaP
-
-def haha():
-    arena = genArena()
-    findPossiblePath(arena)
-    printArena(arena)
-
-class Node:                     #initial values to be changed
-    pos = Pos()
-    orientation = 0
-    pathArray = []
-    pathCost = 0
-    hCost = 0
-
-###########################################################################
-
+# calculate heuristic cost for A* algorithm (distance from node position to goal position)
 def calculateHCost(xpos,ypos):
-    return math.sqrt((xpos-goalPos.x)**2 + (ypos-goalPos.y)**2)
-    
-def shortestPath():
-    #arena = genArena()
-    arena = readArenaTxt()
-    printArena(arena)
-    #arenaP = findPossiblePath(arena)
+    return math.sqrt((xpos-goalPos['x'])**2 + (ypos-goalPos['y'])**2)
 
-    queueFirstNode = {'xpos':startPos.x, 'ypos':startPos.y, 'orientation':0, 'pathArray':[], 'pathCost':0, 'hCost':calculateHCost(startPos.x,startPos.y)}
-
-    #queue = Node()
-    #queueFirstNode['xpos'] = startPos.x
-    #queueFirstNode['ypos'] = startPos.y
-    #queueFirstNode['orientation'] = 0
-    #queueFirstNode['pathArray'] = [startPos]
-    #queueFirstNode['pathCost'] = 0
-    #queueFirstNode['hCost'] = calculateHCost(startPos)
-
-    aStarQueue = [queueFirstNode]
-    
-    finalPath = astar(arena,aStarQueue)
-
-    if (finalPath == None):
-        print "No possible path"
-    else: print finalPath
-
-    for i in range(len(finalPath)):
-         yFinal = finalPath[i][1]
-         xFinal = finalPath[i][0]
-         arena[yFinal][xFinal] = "-"
-    printArena(arena)
-
+# check if moving forward/left/right is possible
+#   orientation = 0 => robot facing north
+#   orientation = 1 => robot facing east
+#   orientation = 2 => robot facing south
+#   orientation = 3 => robot facing west
 def checkBump(node,direction,arena):
-    true = True
-    false = False
     if (direction == "left"):
         if (node['orientation'] == 0):
             if ((node['xpos']-2) in range(0,x_max) and
@@ -292,36 +73,28 @@ def checkBump(node,direction,arena):
                 arena[node['ypos']][node['xpos']-2] == "0" and
                 arena[node['ypos']+1][node['xpos']-2] == "0"):
                     return True
-            else:
-     #           print("false1")
-                return false
+            else: return False
         elif (node['orientation'] == 1):
             if ((node['xpos']-1) in range(0,x_max) and
                 (node['ypos']-1) in range(0,y_max) and
                 arena[node['ypos']-1][node['xpos']] == "0" and
                 arena[node['ypos']-1][node['xpos']-1] == "0"):
                     return True
-            else:
-     #           print("false2")
-                return false
+            else: return False
         elif (node['orientation'] == 2):
             if ((node['xpos']+1) in range(0,x_max) and
                 (node['ypos']+1) in range(0,y_max) and
                 arena[node['ypos']][node['xpos']+1] == "0" and
                 arena[node['ypos']+1][node['xpos']+1] == "0"):
                     return True
-            else:
-     #           print("false3")
-                return false
+            else: return False
         else:
             if ((node['xpos']-1) in range(0,x_max) and
                 (node['ypos']+2) in range(0,y_max) and
                 arena[node['ypos']+2][node['xpos']] == "0" and
                 arena[node['ypos']+2][node['xpos']-1] == "0"):
                     return True
-            else:
-     #           print("false4")
-                return false
+            else: return False
 
     elif (direction == "right"): 
         if (node['orientation'] == 0):
@@ -330,27 +103,21 @@ def checkBump(node,direction,arena):
                 arena[node['ypos']][node['xpos']+1] == "0" and
                 arena[node['ypos']+1][node['xpos']+1] == "0"):
                     return True
-            else:
-     #           print("false5")
-                return false
+            else: return False
         elif (node['orientation'] == 1):
             if ((node['xpos']-1) in range(0,x_max) and
                 (node['ypos']+2) in range(0,y_max) and
                 arena[node['ypos']+2][node['xpos']] == "0" and
                 arena[node['ypos']+2] [node['xpos']-1]== "0"):
                     return True
-            else:
-    #            print("false6")
-                return false
+            else: return False
         elif (node['orientation'] == 2):
             if ((node['xpos']-2) in range(0,x_max) and
                 (node['ypos']+1) in range(0,y_max) and
                 arena[node['ypos']][node['xpos']-2] == "0" and
                 arena[node['ypos']+1][node['xpos']-2] == "0"):
-                    return true
-            else:
-    #            print("false7")
-                return false
+                    return True
+            else: return False
         else:
             if ((node['xpos']-1) in range(0,x_max) and
                 (node['ypos']-1) in range(0,y_max) and
@@ -358,8 +125,7 @@ def checkBump(node,direction,arena):
                 arena[node['ypos']-1][node['xpos']-1] == "0"):
                     return True
             else:
-                return false
-    #            print("false8")
+                return False
 
     else:
         if (node['orientation'] == 0):
@@ -368,90 +134,72 @@ def checkBump(node,direction,arena):
                 arena[node['ypos']-1][node['xpos']] == "0" and
                 arena[node['ypos']-1][node['xpos']-1] == "0"):
                     return True
-            else:
-    #            print("false9")
-                return false
+            else: return False
         elif (node['orientation'] == 1):
             if ((node['xpos']+1) in range(0,x_max) and
                 (node['ypos']+1) in range(0,y_max) and
                 arena[node['ypos']][node['xpos']+1] == "0" and
                 arena[node['ypos']+1][node['xpos']+1] == "0"):
-                    return true
-            else:
-    #            print("false10")
-                return false
+                    return True
+            else: return False
         elif (node['orientation'] == 2):
             if ((node['xpos']-1) in range(0,x_max) and
                 (node['ypos']+2) in range(0,y_max) and
                 arena[node['ypos']+2][node['xpos']] == "0" and
                 arena[node['ypos']+2][node['xpos']-1] == "0"):
-                    return true
-            else:
-     #           print("false11")
-                return false
+                    return True
+            else: return False
         else:
             if ((node['xpos']-2) in range(0,x_max) and
                 (node['ypos']+1) in range(0,y_max) and
                 arena[node['ypos']+1][node['xpos']-2] == "0" and
                 arena[node['ypos']+1][node['xpos']-2] == "0"):
-                    return true
-            else:
-     #           print("false12")
-                return false
+                    return True
+            else: return False
 
+# A* algorithm function for calculating shortest path
 def astar(arena,queue):
-    while (True):
-        moveForwPos = Pos()
-        moveLeftPos = Pos()
-        moveRightPos = Pos()
-
-        ##print("1)",end="")
-        ##for i in range(len(queue)):
-        ##    print("[",queue[i]['xpos'],",",queue[i]['ypos'],"]",end="")
-        ##print("")
-        
+    visitedNodes = [[18,1]]
+    while (True):   
         node = queue[0]
         queue = queue[1:]
+        visitedNodes += [[node['ypos'],node['xpos']]]
 
-        '''print("2)",end="")
-        for i in range(len(queue)):
-            print("[",queue[i]['xpos'],",",queue[i]['ypos'],"]",end="")
-        print("")'''
-
-        ##print("Node: [",node['xpos']," ",node['ypos'],"]")
-        ##print(node)
-        #3print(node['pathArray'])
-
-        moveForwardNode = {} #Node()
-        moveLeftNode = {} #Node()
-        moveRightNode = {} #Node()
+        moveForwardNode = {} 
+        moveLeftNode = {} 
+        moveRightNode = {} 
         checkBumpForward = checkBump(node,"forward",arena)
         checkBumpLeft = checkBump(node,"left",arena)
         checkBumpRight = checkBump(node,"right",arena)
 
-        ##print(checkBumpForward," ",checkBumpLeft," ",checkBumpRight)
-    
+        # 'xpos'        => next column position
+        # 'ypos'        => next row position
+        # 'orientation' => direction faced by robot
+        # 'pathArray'   => previous nodes visited by robot until this node only
+        # 'pathCost'    => number of steps taken
+        # 'fCost'       => pathCost + heuristic cost
+        # if required turning, pathCost increases by 2; else increases by 1
         if node['orientation'] == 0:
             moveForwardNode['xpos'] = node['xpos']
             moveForwardNode['ypos'] = node['ypos']-1
             moveForwardNode['orientation'] = 0
             moveForwardNode['pathArray'] = node['pathArray'] + [[node['xpos'],node['ypos']]]
             moveForwardNode['pathCost'] = node['pathCost'] + 1
-            moveForwardNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveForwardNode['xpos'],moveForwardNode['ypos'])
+            moveForwardNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveForwardNode['xpos'],moveForwardNode['ypos'])
         
             moveLeftNode['xpos'] = node['xpos']-1
             moveLeftNode['ypos'] = node['ypos']
             moveLeftNode['orientation'] = 4
             moveLeftNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
             moveLeftNode['pathCost'] = node['pathCost'] + 2
-            moveLeftNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveLeftNode['xpos'],moveLeftNode['ypos'])
+            moveLeftNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveLeftNode['xpos'],moveLeftNode['ypos'])
 
             moveRightNode['xpos'] = node['xpos']+1
             moveRightNode['ypos'] = node['ypos']
             moveRightNode['orientation'] = 1
             moveRightNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
             moveRightNode['pathCost'] = node['pathCost'] + 2
-            moveRightNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveRightNode['xpos'],moveRightNode['ypos'])
+            moveRightNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveRightNode['xpos'],moveRightNode['ypos'])
     
         elif node['orientation'] == 1:
             moveForwardNode['xpos'] = node['xpos']+1
@@ -459,21 +207,21 @@ def astar(arena,queue):
             moveForwardNode['orientation'] = 1
             moveForwardNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
             moveForwardNode['pathCost'] = node['pathCost'] + 2
-            moveForwardNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveForwardNode['xpos'],moveForwardNode['ypos'])
+            moveForwardNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveForwardNode['xpos'],moveForwardNode['ypos'])
 
             moveLeftNode['xpos'] = node['xpos']
             moveLeftNode['ypos'] = node['ypos']-1
             moveLeftNode['orientation'] = 0
             moveLeftNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
             moveLeftNode['pathCost'] = node['pathCost'] + 2
-            moveLeftNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveLeftNode['xpos'],moveLeftNode['ypos'])
+            moveLeftNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveLeftNode['xpos'],moveLeftNode['ypos'])
 
             moveRightNode['xpos'] = node['xpos']
             moveRightNode['ypos'] = node['ypos']+1
             moveRightNode['orientation'] = 2
             moveRightNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
             moveRightNode['pathCost'] = node['pathCost'] + 1
-            moveRightNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveRightNode['xpos'],moveRightNode['ypos'])
+            moveRightNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveRightNode['xpos'],moveRightNode['ypos'])
 
         elif node['orientation'] == 2:
             moveForwardNode['xpos'] = node['xpos']
@@ -481,21 +229,21 @@ def astar(arena,queue):
             moveForwardNode['orientation'] = 2
             moveForwardNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
             moveForwardNode['pathCost'] = node['pathCost'] + 1
-            moveForwardNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveForwardNode['xpos'],moveForwardNode['ypos'])
+            moveForwardNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveForwardNode['xpos'],moveForwardNode['ypos'])
 
             moveLeftNode['xpos'] = node['xpos']+1
             moveLeftNode['ypos'] = node['ypos']
             moveLeftNode['orientation'] = 1
             moveLeftNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
             moveLeftNode['pathCost']= node['pathCost'] + 2
-            moveLeftNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveLeftNode['xpos'],moveLeftNode['ypos'])
+            moveLeftNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveLeftNode['xpos'],moveLeftNode['ypos'])
 
             moveRightNode['xpos'] = node['xpos']-1
             moveRightNode['ypos'] = node['ypos']
             moveRightNode['orientation'] = 3
             moveRightNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
             moveRightNode['pathCost'] = node['pathCost'] + 2
-            moveRightNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveRightNode['xpos'],moveRightNode['ypos'])
+            moveRightNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveRightNode['xpos'],moveRightNode['ypos'])
 
         else:
             moveForwardNode['xpos'] = node['xpos']-1
@@ -503,79 +251,61 @@ def astar(arena,queue):
             moveForwardNode['orientation'] = 3
             moveForwardNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
             moveForwardNode['pathCost'] = node['pathCost'] + 1
-            moveForwardNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveForwardNode['xpos'],moveForwardNode['ypos'])
+            moveForwardNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveForwardNode['xpos'],moveForwardNode['ypos'])
 
             moveLeftNode['xpos'] = node['xpos']
             moveLeftNode['ypos'] = node['ypos']+1
             moveLeftNode['orientation'] = 2
             moveLeftNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
             moveLeftNode['pathCost'] = node['pathCost'] + 2
-            moveLeftNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveLeftNode['xpos'],moveLeftNode['ypos'])
+            moveLeftNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveLeftNode['xpos'],moveLeftNode['ypos'])
 
             moveRightNode['xpos'] = node['xpos']
             moveRightNode['ypos'] = node['ypos']-1
             moveRightNode['orientation'] = 0
             moveRightNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
             moveRightNode['pathCost'] = node['pathCost'] + 2
-            moveRightNode['hCost'] = moveForwardNode['pathCost'] + calculateHCost(moveRightNode['xpos'],moveRightNode['ypos'])
-        
-        ##print(moveForwardNode)
-        ##print(moveLeftNode)
-        ##print(moveRightNode)
-        ##print("")
-        ##print(queue)
+            moveRightNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveRightNode['xpos'],moveRightNode['ypos'])
 
-        if (checkBumpForward and checkNodeinQueue(moveForwardNode,queue)):
-            queue.append(moveForwardNode)
-            ##print("forward checked")
-        if (checkBumpLeft and checkNodeinQueue(moveLeftNode,queue)):
-            queue.append(moveLeftNode)
-            ##print("left checked")
-        if (checkBumpRight and checkNodeinQueue(moveRightNode,queue)):
-            queue.append(moveRightNode)
-            ##print("right checked")
+        if (checkBumpForward and checkNodeinQueue(moveForwardNode,queue,visitedNodes)):
+            if ([moveForwardNode['ypos'],moveForwardNode['xpos']] not in visitedNodes):
+                queue.append(moveForwardNode)
+                ##visitedNodes += [[moveForwardNode['ypos'],moveForwardNode['xpos']]]
+        if (checkBumpLeft and checkNodeinQueue(moveLeftNode,queue,visitedNodes)):
+            if ([moveLeftNode['ypos'],moveLeftNode['xpos']] not in visitedNodes):
+                queue.append(moveLeftNode)
+                ##visitedNodes += [[moveLeftNode['ypos'],moveLeftNode['xpos']]]
+        if (checkBumpRight and checkNodeinQueue(moveRightNode,queue,visitedNodes)):
+            if ([moveRightNode['ypos'],moveRightNode['xpos']] not in visitedNodes):
+                queue.append(moveRightNode)
+                ##visitedNodes += [[moveRightNode['ypos'],moveRightNode['xpos']]]
 
-        ##print("")
-        ##print("3)",end="")
-        ##for i in range(len(queue)):
-        ##    print("[",queue[i]['xpos'],",",queue[i]['ypos'],"]",end="")
-        ##print("")
-        
-        queue = sorted(queue, key=operator.itemgetter('hCost'))
-
-        ##print("4)",end="")
-        ##for i in range(len(queue)):
-        ##    print("[",queue[i]['xpos'],",",queue[i]['ypos'],"]",end="")
-        ##print("")
+        queue = sorted(queue, key=operator.itemgetter('fCost'))
+        #print visitedNodes, '\n'
 
         if (queue == []):
             return None
             break
-        elif (queue[0]['xpos'] == goalPos.x and queue[0]['ypos'] == goalPos.y):
-            ##print("\n",queue[0]['xpos'],",",queue[0]['ypos'],"\nPathArray:",queue[0]['pathArray'])
+        elif (queue[0]['xpos'] == goalPos['x'] and queue[0]['ypos'] == goalPos['y']):
             return (queue[0]['pathArray'] + [[queue[0]['xpos'],queue[0]['ypos']]])
             break
-        #else:
-            ##print("\n",queue[0]['xpos'],",",queue[0]['ypos'],"\nPathArray:",queue[0]['pathArray'])
-            #return astar(arena,queue)
 
-def checkNodeinQueue(node,queue):
+def checkNodeinQueue(node,queue,visitedNodes):
     i = 0
     while (i in range(len(queue))):
-    #for i in range(len(queue)):
-        ##print("hahaStart",i)
-        ##print(queue)
-        ##print("Length: ",len(queue),"\n")
         if (node['xpos'] == queue[i]['xpos'] and
             node['ypos'] == queue[i]['ypos']):
-            #print("QueueHCost: ", queue[i]['hCost'])
-            #print("NodeHCost: ",node['hcost'])
-            if (node['hCost'] >= queue[i]['hCost']):
-                return False;
+            if (node['fCost'] >= queue[i]['fCost']):
+                return False
+            #elif ([node['ypos'],node['xpos']] not in queue and [node['ypos'],node['xpos']] in visitedNodes):
+                #print "haha"
+                #return False;
             else:
+                #queue = queue[:i] + [node['ypos'],node['xpos']] + queue[(i+1):]
+                #return False
                 queue = queue[:i] + queue[(i+1):]
+                i -= 1       
         i += 1
-        ##print("haha",i)
     return True;
 
 def readArenaTxt():
@@ -583,7 +313,7 @@ def readArenaTxt():
     i = 0
     j = 0
     start = 1
-    with open("test11.txt") as f:
+    with open("test12.txt") as f:
         c = f.read(1)
         while c:
             while (c != "\n" and c):
@@ -598,6 +328,28 @@ def readArenaTxt():
             start = 1
             c = f.read(1)
     return arena
+
+# insert shortestPath() to start finding shortest path    
+def shortestPath():
+    arena = readArenaTxt()
+    printArena(arena)
+
+    queueFirstNode = {'xpos':startPos['x'], 'ypos':startPos['y'], 'orientation':0, 'pathArray':[], 'pathCost':0, 'hCost':calculateHCost(startPos['x'],startPos['y'])}
+
+    aStarQueue = [queueFirstNode]
     
+    finalPath = astar(arena,aStarQueue)
+
+    if (finalPath == None):
+        print "No possible path"
+    else:
+        print finalPath
+        for i in range(len(finalPath)):
+             yFinal = finalPath[i][1]
+             xFinal = finalPath[i][0]
+             arena[yFinal][xFinal] = "-"
+        printArena(arena)
+
+shortestPath()
                 
             
