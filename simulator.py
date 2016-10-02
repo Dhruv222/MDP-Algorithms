@@ -1,4 +1,3 @@
-from generatemap import generate
 from sys import *
 
 Arena = [

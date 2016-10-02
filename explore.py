@@ -1,16 +1,9 @@
 #usr/bin/python
-from serial import Serial
-import sys
-from generatemap import generate
+#from serial import Serial
 import simulator
 
 #initiate serial connection with the Arduino
 #DataChannel = Serial("",)
-
-
-#itr = int(sys.argv[1])
-
-Arena = generate()
 EmptyArena=[[0 for i in range(17)] for j in range(22)]
 
 StartPos = {
@@ -352,36 +345,27 @@ def FrontSideEmpty(robot):
 
                 
 
-def CalculateMove(robot):
+def CalculateMove():
     if(robot.CurrPos == GoalPos):
         if (GoalPos == StartPos):
-            exit()
+            print "Completed"
+            return 0
         else:
             print "Reached Goal Position"
             GoalPos['row'] = StartPos['row']
             GoalPos['col'] = StartPos['col']
-    CheckSensor(robot)
-    UpdateArena(robot)
+    else:
+        CheckSensor(robot)
+        UpdateArena(robot)
     if(LeftSideEmpty(robot)):
-        print "Turn Left"
         TurnRobot(robot, "left")
         CheckSensor(robot)
         UpdateArena(robot)
         MoveRobot(robot, 1)
     elif(FrontSideEmpty(robot)):
-        print "Move Forward"
         MoveRobot(robot, 1)
     else:
-        print "Turn Right"
         TurnRobot(robot, "right")
-    
-    PrintMap(robot)    
-
-
+    return EmptyArena
 
 robot = ArduinoRobot()
-count =0
-while(1 == 1) :
-    print count+1
-    count+=1
-    CalculateMove(robot)
