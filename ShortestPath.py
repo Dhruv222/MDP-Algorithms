@@ -313,7 +313,7 @@ def readArenaTxt():
     i = 0
     j = 0
     start = 1
-    with open("test12.txt") as f:
+    with open("test1.txt") as f:
         c = f.read(1)
         while c:
             while (c != "\n" and c):
@@ -328,6 +328,45 @@ def readArenaTxt():
             start = 1
             c = f.read(1)
     return arena
+
+# give commands of how the robot should move according to shortest path
+def printCommand(finalPath):
+    currNode = finalPath[1]
+    prevNode = finalPath[0]
+    orientation = 0
+    moveForwCount = 0
+    
+    for i in range(len(finalPath)-1):
+        currNode = finalPath[i+1]
+        prevNode = finalPath[i]
+        if  ((orientation == 0 and currNode[1] - prevNode[1] == -1) or
+             (orientation == 1 and currNode[0] - prevNode[0] == 1) or
+             (orientation == 2 and currNode[1] - prevNode[1] == 1) or
+             (orientation == 3 and currNode[0] - prevNode[0] == -1)):
+            moveForwCount += 1
+            
+        elif ((orientation == 0 and currNode[0] - prevNode[0] == 1) or
+             (orientation == 1 and currNode[1] - prevNode[1] == 1) or
+             (orientation == 2 and currNode[0] - prevNode[0] == -1) or
+             (orientation == 3 and currNode[1] - prevNode[1] == -1)):
+            print "MoveRobot(robot,",moveForwCount,")"
+            moveForwCount = 0
+            print "TurnRobot(robot,\"right\")"
+            orientation = (orientation + 1) % 4
+            moveForwCount += 1
+            
+        elif ((orientation == 0 and currNode[0] - prevNode[0] == -1) or
+             (orientation == 1 and currNode[1] - prevNode[1] == -1) or
+             (orientation == 2 and currNode[0] - prevNode[0] == 1) or
+             (orientation == 3 and currNode[1] - prevNode[1] == 1)):
+            print "MoveRobot(robot,",moveForwCount,")"
+            moveForwCount = 0
+            print "TurnRobot(robot,\"left\")"
+            orientation = (orientation + 3) % 4
+            moveForwCount += 1
+
+    if moveForwCount != 0:
+        print "MoveRobot(robot,",moveForwCount,")"
 
 # insert shortestPath() to start finding shortest path    
 def shortestPath():
@@ -349,6 +388,10 @@ def shortestPath():
              xFinal = finalPath[i][0]
              arena[yFinal][xFinal] = "-"
         printArena(arena)
+        print ""
+        printCommand(finalPath)
+
+
 
 shortestPath()
                 
