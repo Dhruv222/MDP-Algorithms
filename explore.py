@@ -368,4 +368,11 @@ def CalculateMove():
         TurnRobot(robot, "right")
     return EmptyArena
 
+
+def RunExplore():
+    while(1==1):
+        if(CalculateMove() == 0):
+            print "Exploration Completed"
+            return EmptyArena
+
 robot = ArduinoRobot()
