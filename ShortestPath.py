@@ -20,6 +20,9 @@ def getArena():
     for i in range(20):
         for j in range(15):
             arena[i][j] = exploreArena[i+1][j+1]
+            if (arena[i][j] <= 1):
+                arena[i][j] = 1
+            else: arena[i][j] = 0
     
 # print arena
 def printArena(arena):
@@ -48,29 +51,29 @@ def checkBump(node,direction,arena):
         if (node['orientation'] == 0):
             if ((node['xpos']-2) in range(0,x_max) and
                 (node['ypos']+1) in range(0,y_max) and
-                arena[node['ypos']][node['xpos']-2] == "0" and
-                arena[node['ypos']+1][node['xpos']-2] == "0"):
+                arena[node['ypos']][node['xpos']-2] == 0 and
+                arena[node['ypos']+1][node['xpos']-2] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 1):
             if ((node['xpos']-1) in range(0,x_max) and
                 (node['ypos']-1) in range(0,y_max) and
-                arena[node['ypos']-1][node['xpos']] == "0" and
-                arena[node['ypos']-1][node['xpos']-1] == "0"):
+                arena[node['ypos']-1][node['xpos']] == 0 and
+                arena[node['ypos']-1][node['xpos']-1] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 2):
             if ((node['xpos']+1) in range(0,x_max) and
                 (node['ypos']+1) in range(0,y_max) and
-                arena[node['ypos']][node['xpos']+1] == "0" and
-                arena[node['ypos']+1][node['xpos']+1] == "0"):
+                arena[node['ypos']][node['xpos']+1] == 0 and
+                arena[node['ypos']+1][node['xpos']+1] == 0):
                     return True
             else: return False
         else:
             if ((node['xpos']-1) in range(0,x_max) and
                 (node['ypos']+2) in range(0,y_max) and
-                arena[node['ypos']+2][node['xpos']] == "0" and
-                arena[node['ypos']+2][node['xpos']-1] == "0"):
+                arena[node['ypos']+2][node['xpos']] == 0 and
+                arena[node['ypos']+2][node['xpos']-1] == 0):
                     return True
             else: return False
 
@@ -78,29 +81,29 @@ def checkBump(node,direction,arena):
         if (node['orientation'] == 0):
             if ((node['xpos']+1) in range(0,x_max) and
                 (node['ypos']+1) in range(0,y_max) and
-                arena[node['ypos']][node['xpos']+1] == "0" and
-                arena[node['ypos']+1][node['xpos']+1] == "0"):
+                arena[node['ypos']][node['xpos']+1] == 0 and
+                arena[node['ypos']+1][node['xpos']+1] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 1):
             if ((node['xpos']-1) in range(0,x_max) and
                 (node['ypos']+2) in range(0,y_max) and
-                arena[node['ypos']+2][node['xpos']] == "0" and
-                arena[node['ypos']+2] [node['xpos']-1]== "0"):
+                arena[node['ypos']+2][node['xpos']] == 0 and
+                arena[node['ypos']+2] [node['xpos']-1] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 2):
             if ((node['xpos']-2) in range(0,x_max) and
                 (node['ypos']+1) in range(0,y_max) and
-                arena[node['ypos']][node['xpos']-2] == "0" and
-                arena[node['ypos']+1][node['xpos']-2] == "0"):
+                arena[node['ypos']][node['xpos']-2] == 0 and
+                arena[node['ypos']+1][node['xpos']-2] == 0):
                     return True
             else: return False
         else:
             if ((node['xpos']-1) in range(0,x_max) and
                 (node['ypos']-1) in range(0,y_max) and
-                arena[node['ypos']-1][node['xpos']] == "0" and
-                arena[node['ypos']-1][node['xpos']-1] == "0"):
+                arena[node['ypos']-1][node['xpos']] == 0 and
+                arena[node['ypos']-1][node['xpos']-1] == 0):
                     return True
             else:
                 return False
@@ -109,29 +112,29 @@ def checkBump(node,direction,arena):
         if (node['orientation'] == 0):
             if ((node['xpos']-1) in range(0,x_max) and
                 (node['ypos']-1) in range(0,y_max) and
-                arena[node['ypos']-1][node['xpos']] == "0" and
-                arena[node['ypos']-1][node['xpos']-1] == "0"):
+                arena[node['ypos']-1][node['xpos']] == 0 and
+                arena[node['ypos']-1][node['xpos']-1] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 1):
             if ((node['xpos']+1) in range(0,x_max) and
                 (node['ypos']+1) in range(0,y_max) and
-                arena[node['ypos']][node['xpos']+1] == "0" and
-                arena[node['ypos']+1][node['xpos']+1] == "0"):
+                arena[node['ypos']][node['xpos']+1] == 0 and
+                arena[node['ypos']+1][node['xpos']+1] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 2):
             if ((node['xpos']-1) in range(0,x_max) and
                 (node['ypos']+2) in range(0,y_max) and
-                arena[node['ypos']+2][node['xpos']] == "0" and
-                arena[node['ypos']+2][node['xpos']-1] == "0"):
+                arena[node['ypos']+2][node['xpos']] == 0 and
+                arena[node['ypos']+2][node['xpos']-1] == 0):
                     return True
             else: return False
         else:
             if ((node['xpos']-2) in range(0,x_max) and
                 (node['ypos']+1) in range(0,y_max) and
-                arena[node['ypos']+1][node['xpos']-2] == "0" and
-                arena[node['ypos']+1][node['xpos']-2] == "0"):
+                arena[node['ypos']+1][node['xpos']-2] == 0 and
+                arena[node['ypos']+1][node['xpos']-2] == 0):
                     return True
             else: return False
 
@@ -248,15 +251,15 @@ def astar(arena,queue):
         if (checkBumpForward and checkNodeinQueue(moveForwardNode,queue,visitedNodes)):
             if ([moveForwardNode['ypos'],moveForwardNode['xpos']] not in visitedNodes):
                 queue.append(moveForwardNode)
-                ##visitedNodes += [[moveForwardNode['ypos'],moveForwardNode['xpos']]]
+                #visitedNodes += [[moveForwardNode['ypos'],moveForwardNode['xpos']]]
         if (checkBumpLeft and checkNodeinQueue(moveLeftNode,queue,visitedNodes)):
             if ([moveLeftNode['ypos'],moveLeftNode['xpos']] not in visitedNodes):
                 queue.append(moveLeftNode)
-                ##visitedNodes += [[moveLeftNode['ypos'],moveLeftNode['xpos']]]
+                #visitedNodes += [[moveLeftNode['ypos'],moveLeftNode['xpos']]]
         if (checkBumpRight and checkNodeinQueue(moveRightNode,queue,visitedNodes)):
             if ([moveRightNode['ypos'],moveRightNode['xpos']] not in visitedNodes):
                 queue.append(moveRightNode)
-                ##visitedNodes += [[moveRightNode['ypos'],moveRightNode['xpos']]]
+                #visitedNodes += [[moveRightNode['ypos'],moveRightNode['xpos']]]
 
         queue = sorted(queue, key=operator.itemgetter('fCost'))
         #print visitedNodes, '\n'
@@ -309,6 +312,7 @@ def readArenaTxt():
 
 # give commands of how the robot should move according to shortest path
 def printCommand(finalPath):
+    command = []
     currNode = finalPath[1]
     prevNode = finalPath[0]
     orientation = 0
@@ -327,9 +331,9 @@ def printCommand(finalPath):
              (orientation == 1 and currNode[1] - prevNode[1] == 1) or
              (orientation == 2 and currNode[0] - prevNode[0] == -1) or
              (orientation == 3 and currNode[1] - prevNode[1] == -1)):
-            print "MoveRobot(robot,",moveForwCount,")"
+            command += [("MoveRobot(robot," + str(moveForwCount) + ")")]
             moveForwCount = 0
-            print "TurnRobot(robot,\"right\")"
+            command += [("TurnRobot(robot,\"right\")")]
             orientation = (orientation + 1) % 4
             moveForwCount += 1
             
@@ -337,18 +341,21 @@ def printCommand(finalPath):
              (orientation == 1 and currNode[1] - prevNode[1] == -1) or
              (orientation == 2 and currNode[0] - prevNode[0] == 1) or
              (orientation == 3 and currNode[1] - prevNode[1] == 1)):
-            print "MoveRobot(robot,",moveForwCount,")"
+            command += [("MoveRobot(robot," + str(moveForwCount) + ")")]
             moveForwCount = 0
-            print "TurnRobot(robot,\"left\")"
+            command += [("TurnRobot(robot,\"left\")")]
             orientation = (orientation + 3) % 4
             moveForwCount += 1
 
     if moveForwCount != 0:
-        print "MoveRobot(robot,",moveForwCount,")"
+        command += [("MoveRobot(robot," + str(moveForwCount) + ")")]
+
+    return command
 
 # insert shortestPath() to start finding shortest path    
 def shortestPath():
     getArena()
+    #arena = readArenaTxt()
     printArena(arena)
 
     queueFirstNode = {'xpos':startPos['x'], 'ypos':startPos['y'], 'orientation':0, 'pathArray':[], 'pathCost':0, 'hCost':calculateHCost(startPos['x'],startPos['y'])}
@@ -359,6 +366,7 @@ def shortestPath():
 
     if (finalPath == None):
         print "No possible path"
+        command = 0
     else:
         print finalPath
         for i in range(len(finalPath)):
@@ -367,7 +375,9 @@ def shortestPath():
              arena[yFinal][xFinal] = "-"
         printArena(arena)
         print ""
-        printCommand(finalPath)
+        command = printCommand(finalPath)
+
+    print command
 
 
 
