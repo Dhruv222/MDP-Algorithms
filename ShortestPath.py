@@ -326,8 +326,7 @@ def printCommand(count):
 
     yFinal = finalPath[count][1]
     xFinal = finalPath[count][0]
-    arena[yFinal][xFinal] = "2"
-    printArena(arena)
+    arena[yFinal][xFinal] = 2
 
     if (count != 0):
         currNode = finalPath[count]
@@ -369,8 +368,8 @@ def shortestPath():
     global arena
     arena = [[0 for i in range(15)] for j in range (20)]
     
-    #getArena()
-    arena = readArenaTxt()
+    getArena()
+    #arena = readArenaTxt()
     printArena(arena)
 
     queueFirstNode = {'xpos':startPos['x'], 'ypos':startPos['y'], 'orientation':0, 'pathArray':[], 'pathCost':0, 'hCost':calculateHCost(startPos['x'],startPos['y'])}
@@ -384,11 +383,6 @@ def shortestPath():
     if (finalPath == None):
         print "No possible path"
         command = 0
-    else:
-        print finalPath
-        for i in range(len(finalPath)):
-            arena = printCommand(i)
-            print ""
         
         
         #printArena(arena)
@@ -397,6 +391,5 @@ def shortestPath():
 
     #print command
 
-shortestPath()
                 
             

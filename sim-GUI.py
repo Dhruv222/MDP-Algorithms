@@ -3,8 +3,7 @@ import time
 import tkMessageBox
 import explore
 import simulator
-import pc_test_socket as rpi
-import threading
+import ShortestPath as SP
 
 
 class Simulator:
@@ -25,6 +24,8 @@ class Simulator:
         self.explore_button = Button(self.frame, width=20, height=2, text="Run Exploration", bg="orange", command=self.RunExplore).pack()
         self.shortestPath_button = Button(self.frame, width=20, height=2, text="Run ShortestPath", bg="orange", command=self.RunShortestPath).pack()
 
+
+        self.count = 0
     def UpdateCanvas(self, exploredArena):
         for i in range(1,21):
             for j in range(1,16):
@@ -36,6 +37,12 @@ class Simulator:
                     self.canvas.itemconfig(self.widgetArray[i][j], fill="#99dda4")
         return
     
+    def UpdateShortestCanvas(self, Arena):
+        for i in range(20):
+            for j in range(15):
+                if(Arena[i][j] == 2):
+                    self.canvas.itemconfig(self.widgetArray[i+1][j+1], fill="#231f60")
+        return
 
     def addObstacle(self, event):
         xCoord = event.x//40
@@ -61,8 +68,19 @@ class Simulator:
             tkMessageBox.showinfo("Run Exploration", "Exploration Complete")
             return
     def RunShortestPath(self):
-        print "Shortest Path ran"
-        return
+        if(self.count==0):
+            SP.shortestPath()
+        if(self.count<len(SP.finalPath)):
+            shortestarena = SP.printCommand(self.count)
+            for i in range(20):
+                print shortestarena[i]
+            self.UpdateShortestCanvas(shortestarena)
+            self.count += 1
+            self.master.after(200, self.RunShortestPath)
+        else:
+            tkMessageBox.showinfo("Run ShortestPath", "Shortest Path Complete!")
+            self.count = 0
+            return
 
     def initCanvas(self):
         explore.EmptyArena=[[0 for i in range(17)] for j in range(22)]
