@@ -12,8 +12,9 @@ y_max = 20
 startPos = {'x':1,'y':18}
 goalPos  = {'x':14,'y':0}
 
+
 # random arena generator
-arena = [[0 for i in range(15)] for j in range (20)]
+
 
 def getArena():
     exploreArena = explore.RunExplore()
@@ -30,9 +31,6 @@ def printArena(arena):
     for i in range(y_max):
         print "|",
         for j in range(x_max):
-            if arena[i][j] == -1:
-                print "-1 ",
-            else:
                 print arena[i][j],
         print "|"
     print "| - - - - - - - - - - - - - - - |"
@@ -144,7 +142,7 @@ def astar(arena,queue):
     while (True):   
         node = queue[0]
         queue = queue[1:]
-        visitedNodes += [[node['ypos'],node['xpos']]]
+        ##visitedNodes += [[node['ypos'],node['xpos']]]
 
         moveForwardNode = {} 
         moveLeftNode = {} 
@@ -249,15 +247,15 @@ def astar(arena,queue):
             moveRightNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveRightNode['xpos'],moveRightNode['ypos'])
 
         if (checkBumpForward and checkNodeinQueue(moveForwardNode,queue,visitedNodes)):
-            if ([moveForwardNode['ypos'],moveForwardNode['xpos']] not in visitedNodes):
+            ##if ([moveForwardNode['ypos'],moveForwardNode['xpos']] not in visitedNodes):
                 queue.append(moveForwardNode)
                 #visitedNodes += [[moveForwardNode['ypos'],moveForwardNode['xpos']]]
         if (checkBumpLeft and checkNodeinQueue(moveLeftNode,queue,visitedNodes)):
-            if ([moveLeftNode['ypos'],moveLeftNode['xpos']] not in visitedNodes):
+            ##if ([moveLeftNode['ypos'],moveLeftNode['xpos']] not in visitedNodes):
                 queue.append(moveLeftNode)
                 #visitedNodes += [[moveLeftNode['ypos'],moveLeftNode['xpos']]]
         if (checkBumpRight and checkNodeinQueue(moveRightNode,queue,visitedNodes)):
-            if ([moveRightNode['ypos'],moveRightNode['xpos']] not in visitedNodes):
+            ##if ([moveRightNode['ypos'],moveRightNode['xpos']] not in visitedNodes):
                 queue.append(moveRightNode)
                 #visitedNodes += [[moveRightNode['ypos'],moveRightNode['xpos']]]
 
@@ -270,6 +268,14 @@ def astar(arena,queue):
         elif (queue[0]['xpos'] == goalPos['x'] and queue[0]['ypos'] == goalPos['y']):
             return (queue[0]['pathArray'] + [[queue[0]['xpos'],queue[0]['ypos']]])
             break
+
+        #####################################
+        #for i in range(len(queue)):
+        #    print queue[i]['xpos'], ",", queue[i]['ypos'], queue[i]['orientation']
+        #    print queue
+        
+
+        #####################################
 
 def checkNodeinQueue(node,queue,visitedNodes):
     i = 0
@@ -301,7 +307,7 @@ def readArenaTxt():
                 if start != 0:
                     start = 0
                 else: c = f.read(1)              
-                arena[i][j] = c
+                arena[i][j] = int(c)
                 j += 1
                 c = f.read(1)
             i+=1
@@ -311,20 +317,25 @@ def readArenaTxt():
     return arena
 
 # give commands of how the robot should move according to shortest path
-def printCommand(finalPath):
+def printCommand(count):
     command = []
-    currNode = finalPath[1]
-    prevNode = finalPath[0]
+    #currNode = finalPath[1]
+    #prevNode = finalPath[0]
     orientation = 0
     moveForwCount = 0
-    
-    for i in range(len(finalPath)-1):
-        currNode = finalPath[i+1]
-        prevNode = finalPath[i]
+
+    yFinal = finalPath[count][1]
+    xFinal = finalPath[count][0]
+    arena[yFinal][xFinal] = "2"
+    printArena(arena)
+
+    if (count != 0):
+        currNode = finalPath[count]
+        prevNode = finalPath[count - 1]
         if  ((orientation == 0 and currNode[1] - prevNode[1] == -1) or
-             (orientation == 1 and currNode[0] - prevNode[0] == 1) or
-             (orientation == 2 and currNode[1] - prevNode[1] == 1) or
-             (orientation == 3 and currNode[0] - prevNode[0] == -1)):
+            (orientation == 1 and currNode[0] - prevNode[0] == 1) or
+            (orientation == 2 and currNode[1] - prevNode[1] == 1) or
+            (orientation == 3 and currNode[0] - prevNode[0] == -1)):
             moveForwCount += 1
             
         elif ((orientation == 0 and currNode[0] - prevNode[0] == 1) or
@@ -347,21 +358,27 @@ def printCommand(finalPath):
             orientation = (orientation + 3) % 4
             moveForwCount += 1
 
-    if moveForwCount != 0:
+    if count == len(finalPath) - 1 and moveForwCount != 0:
         command += [("Move " + str(moveForwCount))]
 
-    return command
+    return arena
+
 
 # insert shortestPath() to start finding shortest path    
 def shortestPath():
-    getArena()
-    #arena = readArenaTxt()
+    global arena
+    arena = [[0 for i in range(15)] for j in range (20)]
+    
+    #getArena()
+    arena = readArenaTxt()
     printArena(arena)
 
     queueFirstNode = {'xpos':startPos['x'], 'ypos':startPos['y'], 'orientation':0, 'pathArray':[], 'pathCost':0, 'hCost':calculateHCost(startPos['x'],startPos['y'])}
 
     aStarQueue = [queueFirstNode]
-    
+
+    global finalPath
+
     finalPath = astar(arena,aStarQueue)
 
     if (finalPath == None):
@@ -370,16 +387,15 @@ def shortestPath():
     else:
         print finalPath
         for i in range(len(finalPath)):
-             yFinal = finalPath[i][1]
-             xFinal = finalPath[i][0]
-             arena[yFinal][xFinal] = "-"
-        printArena(arena)
-        print ""
-        command = printCommand(finalPath)
+            arena = printCommand(i)
+            print ""
+        
+        
+        #printArena(arena)
+        #print ""
+        #command = printCommand(finalPath)
 
-    print command
-
-
+    #print command
 
 shortestPath()
                 
