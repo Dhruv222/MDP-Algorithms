@@ -67,13 +67,13 @@ class Simulator:
         else:
             tkMessageBox.showinfo("Run Exploration", "Exploration Complete")
             return
+
+
     def RunShortestPath(self):
         if(self.count==0):
             SP.shortestPath()
         if(self.count<len(SP.finalPath)):
             shortestarena = SP.printCommand(self.count)
-            for i in range(20):
-                print shortestarena[i]
             self.UpdateShortestCanvas(shortestarena)
             self.count += 1
             self.master.after(200, self.RunShortestPath)
