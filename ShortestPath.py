@@ -2,6 +2,7 @@
 ## enter shortestPath() to start calculating shortest path ##
 #############################################################
 
+import explore
 import random
 import math
 import operator
@@ -12,37 +13,14 @@ startPos = {'x':1,'y':18}
 goalPos  = {'x':14,'y':0}
 
 # random arena generator
-def genArena():
-    arena=[[0 for i in range(x_max)] for j in range(y_max)]
-    for i in range(y_max):
-        for j in range(x_max):
-            randnum = random.randint(1, 20)
-            if randnum < 4:
-                arena[i][j] = "X"
+arena = [[0 for i in range(15)] for j in range (20)]
 
-    arena[0][14] = 0
-    arena[0][13] = 0
-    arena[0][12] = 0
-    arena[1][14] = 0
-    arena[1][13] = 0
-    arena[1][12] = 0
-    arena[2][14] = 0
-    arena[2][13] = 0
-    arena[2][12] = 0
+def getArena():
+    exploreArena = explore.RunExplore()
+    for i in range(20):
+        for j in range(15):
+            arena[i][j] = exploreArena[i+1][j+1]
     
-    arena[19][0] = 0
-    arena[19][1] = 0
-    arena[19][2] = 0
-    arena[18][0] = 0
-    arena[18][1] = 0
-    arena[18][2] = 0
-    arena[17][0] = 0
-    arena[17][1] = 0
-    arena[17][2] = 0
-    
-    print "\n"
-    return arena
-
 # print arena
 def printArena(arena):
     print "| - - - - - - - - - - - - - - - |"
@@ -370,7 +348,7 @@ def printCommand(finalPath):
 
 # insert shortestPath() to start finding shortest path    
 def shortestPath():
-    arena = readArenaTxt()
+    getArena()
     printArena(arena)
 
     queueFirstNode = {'xpos':startPos['x'], 'ypos':startPos['y'], 'orientation':0, 'pathArray':[], 'pathCost':0, 'hCost':calculateHCost(startPos['x'],startPos['y'])}
