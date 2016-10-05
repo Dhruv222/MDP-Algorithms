@@ -331,9 +331,9 @@ def printCommand(finalPath):
              (orientation == 1 and currNode[1] - prevNode[1] == 1) or
              (orientation == 2 and currNode[0] - prevNode[0] == -1) or
              (orientation == 3 and currNode[1] - prevNode[1] == -1)):
-            command += [("MoveRobot(robot," + str(moveForwCount) + ")")]
+            command += [("Move " + str(moveForwCount))]
             moveForwCount = 0
-            command += [("TurnRobot(robot,\"right\")")]
+            command += [("Turn Right")]
             orientation = (orientation + 1) % 4
             moveForwCount += 1
             
@@ -341,14 +341,14 @@ def printCommand(finalPath):
              (orientation == 1 and currNode[1] - prevNode[1] == -1) or
              (orientation == 2 and currNode[0] - prevNode[0] == 1) or
              (orientation == 3 and currNode[1] - prevNode[1] == 1)):
-            command += [("MoveRobot(robot," + str(moveForwCount) + ")")]
+            command += [("Move " + str(moveForwCount))]
             moveForwCount = 0
-            command += [("TurnRobot(robot,\"left\")")]
+            command += [("Turn Left")]
             orientation = (orientation + 3) % 4
             moveForwCount += 1
 
     if moveForwCount != 0:
-        command += [("MoveRobot(robot," + str(moveForwCount) + ")")]
+        command += [("Move " + str(moveForwCount))]
 
     return command
 
