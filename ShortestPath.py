@@ -327,6 +327,9 @@ def printCommand(count):
     yFinal = finalPath[count][1]
     xFinal = finalPath[count][0]
     arena[yFinal][xFinal] = 2
+    arena[yFinal+1][xFinal] = 2
+    arena[yFinal][xFinal-1] = 2
+    arena[yFinal+1][xFinal-1] = 2
 
     if (count != 0):
         currNode = finalPath[count]
