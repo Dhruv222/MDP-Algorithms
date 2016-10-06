@@ -70,8 +70,10 @@ class Simulator:
         else:
             tkMessageBox.showinfo("Run Exploration", "Exploration Complete")
             MDFstring = mdfConvert.ExploreArrayToMDF(self.exploredArena)
+            print MDFstring
             tkMessageBox.showinfo("MDF String for Exploration", MDFstring)
             MDFstring = mdfConvert.obstacleArrayToMDF(self.exploredArena)
+            print MDFstring
             tkMessageBox.showinfo("MDF String for Obstacles", MDFstring)
             return
 

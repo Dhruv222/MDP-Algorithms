@@ -179,7 +179,7 @@ def CheckSensor(robot):
 def TurnRobot(robot, direction):
 
     #DataChannel.write("turn "+direction)
-    if ( direction == "right"):
+    if ( direction == "d"):
         robot.orientation = (robot.orientation + 1) % 4
     else:
         robot.orientation = (4 + robot.orientation - 1) % 4
@@ -346,6 +346,7 @@ def FrontSideEmpty(robot):
                 
 
 def CalculateMove():
+    previousmove = ""
     if(robot.CurrPos == GoalPos):
         if (GoalPos == StartPos):
             print "Completed"
@@ -357,16 +358,20 @@ def CalculateMove():
     else:
         CheckSensor(robot)
         UpdateArena(robot)
-    if(LeftSideEmpty(robot)):
-        TurnRobot(robot, "left")
-        CheckSensor(robot)
-        UpdateArena(robot)
-        MoveRobot(robot, 1)
+    if(previousmove == "a"):
+        previousmove = "w"
+        return "w"
+    elif(LeftSideEmpty(robot)):
+        previousmove = "a"
+        return "a"
+        
     elif(FrontSideEmpty(robot)):
-        MoveRobot(robot, 1)
+        previousmove = "w"
+        return "w"
     else:
-        TurnRobot(robot, "right")
-    return EmptyArena
+        previousmove = "d"
+        return "d"
+
 
 
 def RunExplore():
