@@ -350,7 +350,7 @@ def CalculateMove():
     if(robot.CurrPos == GoalPos):
         if (GoalPos == StartPos):
             print "Completed"
-            return 0
+            return -1
         else:
             print "Reached Goal Position"
             GoalPos['row'] = StartPos['row']
