@@ -4,6 +4,7 @@ import tkMessageBox
 import explore
 import simulator
 import ShortestPath as SP
+import mdfConvert
 
 
 class Simulator:
@@ -15,6 +16,7 @@ class Simulator:
 
         self.widgetArray = [[0 for i in range(17)] for j in range(22)]
         self.arena = [[0 for i in range(17)] for j in range(22)]
+        self.exploredArena = [[0 for i in range(17)] for j in range(22)]
         
         self.frame = Frame(self.master)
         self.frame.pack(side="right")
@@ -64,8 +66,13 @@ class Simulator:
         if(newArena != 0):
             self.UpdateCanvas(newArena)
             self.master.after(200, self.RunExplore)
+            self.exploredArena = newArena
         else:
             tkMessageBox.showinfo("Run Exploration", "Exploration Complete")
+            MDFstring = mdfConvert.ExploreArrayToMDF(self.exploredArena)
+            tkMessageBox.showinfo("MDF String for Exploration", MDFstring)
+            MDFstring = mdfConvert.obstacleArrayToMDF(self.exploredArena)
+            tkMessageBox.showinfo("MDF String for Obstacles", MDFstring)
             return
 
 
