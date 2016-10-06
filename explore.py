@@ -173,13 +173,13 @@ def CheckSensor(robot):
     SensorData['FrontLeft'] = SensorArray[2]
     SensorData['FrontRight'] = SensorArray[3]
     SensorData['RightAhead'] = SensorArray[4]
-    SensorData['RightBehind'] = SensorArray[5]
+    #SensorData['RightBehind'] = SensorArray[5]
 
 
 def TurnRobot(robot, direction):
 
     #DataChannel.write("turn "+direction)
-    if ( direction == "d"):
+    if ( direction == "right"):
         robot.orientation = (robot.orientation + 1) % 4
     else:
         robot.orientation = (4 + robot.orientation - 1) % 4
@@ -305,7 +305,7 @@ def UpdateArena(robot):
         EmptyArena[robot.topRight['row']+mul['row'][2]*DistanceSensor][robot.topRight['col'] + mul['col'][2]*DistanceSensor] = 3
 
     ############################################
-
+'''
     #RightBehind Sensor
     DistanceSensor = SensorMax['RightBehind'] if SensorData['RightBehind'] == 0 else SensorData['RightBehind']
       
@@ -320,6 +320,7 @@ def UpdateArena(robot):
     elif(EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] != 2):
         EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] = 3        
 
+'''
 def LeftSideEmpty(robot):
     if(robot.orientation == 0):
         return EmptyArena[robot.topLeft['row']][robot.topLeft['col']-1] != 1 and EmptyArena[robot.bottomLeft['row']][robot.bottomLeft['col']-1] != 1
@@ -360,16 +361,20 @@ def CalculateMove():
         UpdateArena(robot)
     if(previousmove == "a"):
         previousmove = "w"
+        MoveRobot(robot, 1)
         return "w"
     elif(LeftSideEmpty(robot)):
         previousmove = "a"
+        TurnRobot(robot, "left")
         return "a"
         
     elif(FrontSideEmpty(robot)):
         previousmove = "w"
+        MoveRobot(robot, 1)
         return "w"
     else:
         previousmove = "d"
+        TurnRobot(robot, "right")
         return "d"
 
 
