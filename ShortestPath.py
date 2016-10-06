@@ -37,7 +37,7 @@ def printArena(arena):
 
 # calculate heuristic cost for A* algorithm (distance from node position to goal position)
 def calculateHCost(xpos,ypos):
-    return math.sqrt((xpos-goalPos['x'])**2 + (ypos-goalPos['y'])**2)
+    return abs(xpos-goalPos['x']) + abs(ypos-goalPos['y'])
 
 # check if moving forward/left/right is possible
 #   orientation = 0 => robot facing north
@@ -142,7 +142,7 @@ def astar(arena,queue):
     while (True):   
         node = queue[0]
         queue = queue[1:]
-        ##visitedNodes += [[node['ypos'],node['xpos']]]
+        visitedNodes += [[node['ypos'],node['xpos']]]
 
         moveForwardNode = {} 
         moveLeftNode = {} 
@@ -185,7 +185,7 @@ def astar(arena,queue):
             moveForwardNode['ypos'] = node['ypos']
             moveForwardNode['orientation'] = 1
             moveForwardNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
-            moveForwardNode['pathCost'] = node['pathCost'] + 2
+            moveForwardNode['pathCost'] = node['pathCost'] + 1
             moveForwardNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveForwardNode['xpos'],moveForwardNode['ypos'])
 
             moveLeftNode['xpos'] = node['xpos']
@@ -199,7 +199,7 @@ def astar(arena,queue):
             moveRightNode['ypos'] = node['ypos']+1
             moveRightNode['orientation'] = 2
             moveRightNode['pathArray'] = node['pathArray']+ [[node['xpos'],node['ypos']]]
-            moveRightNode['pathCost'] = node['pathCost'] + 1
+            moveRightNode['pathCost'] = node['pathCost'] + 2
             moveRightNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveRightNode['xpos'],moveRightNode['ypos'])
 
         elif node['orientation'] == 2:
@@ -247,17 +247,17 @@ def astar(arena,queue):
             moveRightNode['fCost'] = moveForwardNode['pathCost'] + calculateHCost(moveRightNode['xpos'],moveRightNode['ypos'])
 
         if (checkBumpForward and checkNodeinQueue(moveForwardNode,queue,visitedNodes)):
-            ##if ([moveForwardNode['ypos'],moveForwardNode['xpos']] not in visitedNodes):
+            if ([moveForwardNode['ypos'],moveForwardNode['xpos']] not in visitedNodes):
                 queue.append(moveForwardNode)
-                #visitedNodes += [[moveForwardNode['ypos'],moveForwardNode['xpos']]]
+                visitedNodes += [[moveForwardNode['ypos'],moveForwardNode['xpos']]]
         if (checkBumpLeft and checkNodeinQueue(moveLeftNode,queue,visitedNodes)):
-            ##if ([moveLeftNode['ypos'],moveLeftNode['xpos']] not in visitedNodes):
+            if ([moveLeftNode['ypos'],moveLeftNode['xpos']] not in visitedNodes):
                 queue.append(moveLeftNode)
-                #visitedNodes += [[moveLeftNode['ypos'],moveLeftNode['xpos']]]
+                visitedNodes += [[moveLeftNode['ypos'],moveLeftNode['xpos']]]
         if (checkBumpRight and checkNodeinQueue(moveRightNode,queue,visitedNodes)):
-            ##if ([moveRightNode['ypos'],moveRightNode['xpos']] not in visitedNodes):
+            if ([moveRightNode['ypos'],moveRightNode['xpos']] not in visitedNodes):
                 queue.append(moveRightNode)
-                #visitedNodes += [[moveRightNode['ypos'],moveRightNode['xpos']]]
+                visitedNodes += [[moveRightNode['ypos'],moveRightNode['xpos']]]
 
         queue = sorted(queue, key=operator.itemgetter('fCost'))
         #print visitedNodes, '\n'
