@@ -1,6 +1,7 @@
 #usr/bin/python
 #from serial import Serial
 import simulator
+import pc_test_socket
 
 #initiate serial connection with the Arduino
 #DataChannel = Serial("",)
@@ -165,7 +166,10 @@ def PrintMap(robot):
 
 
 def CheckSensor(robot):
-    SensorArray = simulator.getSensorArray(robot.orientation, robot.CurrPos)
+    #SensorArray = simulator.getSensorArray(robot.orientation, robot.CurrPos)
+    TryArray = [x for x in comThread.receive().split(" ")]
+    TryArray[0] = TryArray[0][-1]
+    SensorArray = [int(x) for x in TryArray]
     #SensorArray = [int(x) for x in DataChannel.readline().split(" ")]
     #SensorArray = [3,3,3,3,3,3]
     SensorData['LeftBehind'] = SensorArray[0]
@@ -177,7 +181,7 @@ def CheckSensor(robot):
 
 
 def TurnRobot(robot, direction):
-
+    comThread.write(direction)
     #DataChannel.write("turn "+direction)
     if ( direction == "right"):
         robot.orientation = (robot.orientation + 1) % 4
@@ -188,6 +192,7 @@ def TurnRobot(robot, direction):
     return
 
 def MoveRobot(robot, blocks):
+    comThread.write("w")
     #DataChannel.write("move "+blocks)
     pastPos = robot.CurrPos
     if(robot.orientation==0):
@@ -348,34 +353,32 @@ def FrontSideEmpty(robot):
 
 def CalculateMove():
     previousmove = ""
-    if(robot.CurrPos == GoalPos):
-        if (GoalPos == StartPos):
-            print "Completed"
-            return -1
+    while(1 == 1):
+        if(robot.CurrPos == GoalPos):
+            if (GoalPos == StartPos):
+                print "Completed"
+                return -1
+            else:
+                print "Reached Goal Position"
+                GoalPos['row'] = StartPos['row']
+                GoalPos['col'] = StartPos['col']
         else:
-            print "Reached Goal Position"
-            GoalPos['row'] = StartPos['row']
-            GoalPos['col'] = StartPos['col']
-    else:
-        CheckSensor(robot)
-        UpdateArena(robot)
-    if(previousmove == "a"):
-        previousmove = "w"
-        MoveRobot(robot, 1)
-        return "w"
-    elif(LeftSideEmpty(robot)):
-        previousmove = "a"
-        TurnRobot(robot, "left")
-        return "a"
-        
-    elif(FrontSideEmpty(robot)):
-        previousmove = "w"
-        MoveRobot(robot, 1)
-        return "w"
-    else:
-        previousmove = "d"
-        TurnRobot(robot, "right")
-        return "d"
+            CheckSensor(robot)
+            UpdateArena(robot)
+        if(previousmove == "a"):
+            previousmove = "w"
+            MoveRobot(robot, 1)
+
+        elif(LeftSideEmpty(robot)):
+            previousmove = "a"
+            TurnRobot(robot, "a")
+            
+        elif(FrontSideEmpty(robot)):
+            previousmove = "w"
+            MoveRobot(robot, 1)
+        else:
+            previousmove = "d"
+            TurnRobot(robot, "d")
 
 
 
@@ -386,3 +389,5 @@ def RunExplore():
             return EmptyArena
 
 robot = ArduinoRobot()
+comThread = pc_test_socket.Test()
+CalculateMove()
