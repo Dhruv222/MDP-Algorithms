@@ -33,7 +33,7 @@ def ExploreArrayToMDF(arena):
 
 def MDFtoObstacleArray(mdf, arena):
     mdf = hexToBin(mdf)
-    for i  in range(1,21):
+    for i  in range(20,0,-1):
         for j in range(1, 16):
             if (arena[i][j] == 1):
                 if (mdf[0] == 0):
@@ -45,7 +45,7 @@ def MDFtoObstacleArray(mdf, arena):
 def MDFtoExploreArray(mdf):
     arena = []
     shortmdf = hexToBin(mdf)[1:-2]
-    for i in range(22):
+    for i in range(21,-1,-1):
         arena.append([])
         for j in range(17):
             if (i == 0 or i == 21 or j == 0 or j ==16):
