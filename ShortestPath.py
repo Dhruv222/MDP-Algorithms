@@ -11,7 +11,7 @@ import mdfConvert
 x_max = 15
 y_max = 20
     
-startPos = {'x':1,'y':18}
+startPos = {'x':2,'y':17}
 goalPos  = {'x':14,'y':0}
 
 
@@ -49,98 +49,110 @@ def calculateHCost(xpos,ypos):
 def checkBump(node,direction,arena):
     if (direction == "left"):
         if (node['orientation'] == 0):
-            if ((node['xpos']-2) in range(0,x_max) and
-                (node['ypos']+1) in range(0,y_max) and
-                arena[node['ypos']][node['xpos']-2] == 0 and
-                arena[node['ypos']+1][node['xpos']-2] == 0):
+            if ((node['xpos']-3) in range(0,x_max) and
+                (node['ypos']+2) in range(0,y_max) and
+                arena[node['ypos']][node['xpos']-3] == 0 and
+                arena[node['ypos']+1][node['xpos']-3] == 0 and
+                arena[node['ypos']+2][node['xpos']-3] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 1):
-            if ((node['xpos']-1) in range(0,x_max) and
+            if ((node['xpos']-2) in range(0,x_max) and
                 (node['ypos']-1) in range(0,y_max) and
                 arena[node['ypos']-1][node['xpos']] == 0 and
-                arena[node['ypos']-1][node['xpos']-1] == 0):
+                arena[node['ypos']-1][node['xpos']-1] == 0 and
+                arena[node['ypos']-1][node['xpos']-2] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 2):
             if ((node['xpos']+1) in range(0,x_max) and
-                (node['ypos']+1) in range(0,y_max) and
+                (node['ypos']+2) in range(0,y_max) and
                 arena[node['ypos']][node['xpos']+1] == 0 and
-                arena[node['ypos']+1][node['xpos']+1] == 0):
+                arena[node['ypos']+1][node['xpos']+1] == 0 and
+                arena[node['ypos']+2][node['xpos']+1] == 0):
                     return True
             else: return False
         else:
-            if ((node['xpos']-1) in range(0,x_max) and
-                (node['ypos']+2) in range(0,y_max) and
-                arena[node['ypos']+2][node['xpos']] == 0 and
-                arena[node['ypos']+2][node['xpos']-1] == 0):
+            if ((node['xpos']-2) in range(0,x_max) and
+                (node['ypos']+3) in range(0,y_max) and
+                arena[node['ypos']+3][node['xpos']] == 0 and
+                arena[node['ypos']+3][node['xpos']-1] == 0 and
+                arena[node['ypos']+3][node['xpos']-2] == 0):
                     return True
             else: return False
 
     elif (direction == "right"): 
         if (node['orientation'] == 0):
             if ((node['xpos']+1) in range(0,x_max) and
-                (node['ypos']+1) in range(0,y_max) and
+                (node['ypos']+2) in range(0,y_max) and
                 arena[node['ypos']][node['xpos']+1] == 0 and
-                arena[node['ypos']+1][node['xpos']+1] == 0):
+                arena[node['ypos']+1][node['xpos']+1] == 0 and
+                arena[node['ypos']+2][node['xpos']+1] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 1):
-            if ((node['xpos']-1) in range(0,x_max) and
-                (node['ypos']+2) in range(0,y_max) and
-                arena[node['ypos']+2][node['xpos']] == 0 and
-                arena[node['ypos']+2] [node['xpos']-1] == 0):
+            if ((node['xpos']-2) in range(0,x_max) and
+                (node['ypos']+3) in range(0,y_max) and
+                arena[node['ypos']+3][node['xpos']] == 0 and
+                arena[node['ypos']+3][node['xpos']-1] == 0 and
+                arena[node['ypos']+3][node['xpos']-2] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 2):
-            if ((node['xpos']-2) in range(0,x_max) and
-                (node['ypos']+1) in range(0,y_max) and
-                arena[node['ypos']][node['xpos']-2] == 0 and
-                arena[node['ypos']+1][node['xpos']-2] == 0):
+            if ((node['xpos']-3) in range(0,x_max) and
+                (node['ypos']+2) in range(0,y_max) and
+                arena[node['ypos']][node['xpos']-3] == 0 and
+                arena[node['ypos']+1][node['xpos']-3] == 0 and
+                arena[node['ypos']+2][node['xpos']-3] == 0):
                     return True
             else: return False
         else:
-            if ((node['xpos']-1) in range(0,x_max) and
+            if ((node['xpos']-2) in range(0,x_max) and
                 (node['ypos']-1) in range(0,y_max) and
                 arena[node['ypos']-1][node['xpos']] == 0 and
-                arena[node['ypos']-1][node['xpos']-1] == 0):
+                arena[node['ypos']-1][node['xpos']-1] == 0 and
+                arena[node['ypos']-1][node['xpos']-2] == 0):
                     return True
             else:
                 return False
 
     else:
         if (node['orientation'] == 0):
-            if ((node['xpos']-1) in range(0,x_max) and
+            if ((node['xpos']-2) in range(0,x_max) and
                 (node['ypos']-1) in range(0,y_max) and
                 arena[node['ypos']-1][node['xpos']] == 0 and
-                arena[node['ypos']-1][node['xpos']-1] == 0):
+                arena[node['ypos']-1][node['xpos']-1] == 0 and
+                arena[node['ypos']-1][node['xpos']-2] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 1):
             if ((node['xpos']+1) in range(0,x_max) and
-                (node['ypos']+1) in range(0,y_max) and
+                (node['ypos']+2) in range(0,y_max) and
                 arena[node['ypos']][node['xpos']+1] == 0 and
-                arena[node['ypos']+1][node['xpos']+1] == 0):
+                arena[node['ypos']+1][node['xpos']+1] == 0 and
+                arena[node['ypos']+2][node['xpos']+1] == 0):
                     return True
             else: return False
         elif (node['orientation'] == 2):
-            if ((node['xpos']-1) in range(0,x_max) and
-                (node['ypos']+2) in range(0,y_max) and
-                arena[node['ypos']+2][node['xpos']] == 0 and
-                arena[node['ypos']+2][node['xpos']-1] == 0):
+            if ((node['xpos']-2) in range(0,x_max) and
+                (node['ypos']+3) in range(0,y_max) and
+                arena[node['ypos']+3][node['xpos']] == 0 and
+                arena[node['ypos']+3][node['xpos']-1] == 0 and
+                arena[node['ypos']+3][node['xpos']-2] == 0):
                     return True
             else: return False
         else:
-            if ((node['xpos']-2) in range(0,x_max) and
-                (node['ypos']+1) in range(0,y_max) and
-                arena[node['ypos']+1][node['xpos']-2] == 0 and
-                arena[node['ypos']+1][node['xpos']-2] == 0):
+            if ((node['xpos']-3) in range(0,x_max) and
+                (node['ypos']+2) in range(0,y_max) and
+                arena[node['ypos']][node['xpos']-3] == 0 and
+                arena[node['ypos']+1][node['xpos']-3] == 0 and
+                arena[node['ypos']+2][node['xpos']-3] == 0):
                     return True
             else: return False
 
 # A* algorithm function for calculating shortest path
 def astar(arena,queue):
-    visitedNodes = [[18,1]]
+    visitedNodes = [[17,2]]
     while (True):   
         node = queue[0]
         queue = queue[1:]
@@ -330,8 +342,13 @@ def printCommand(count):
     xFinal = finalPath[count][0]
     arena[yFinal][xFinal] = 2
     arena[yFinal+1][xFinal] = 2
+    arena[yFinal+2][xFinal] = 2
     arena[yFinal][xFinal-1] = 2
     arena[yFinal+1][xFinal-1] = 2
+    arena[yFinal+2][xFinal-1] = 2
+    arena[yFinal][xFinal-2] = 2
+    arena[yFinal+1][xFinal-2] = 2
+    arena[yFinal+2][xFinal-2] = 2
 
     if (count != 0):
         currNode = finalPath[count]
