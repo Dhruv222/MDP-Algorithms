@@ -375,8 +375,6 @@ global previousmove
 def CalculateMove():
     count = 0
     global previousmove
-    print GoalPos['row'], GoalPos['col']
-    print robot.CurrPos['row'], robot.CurrPos['col'] 
     if(robot.CurrPos == GoalPos):
         if (GoalPos == StartPos):
             print "Completed"
@@ -389,7 +387,7 @@ def CalculateMove():
     else:
         CheckSensor(robot)
         UpdateArena(robot)
-    PrintMap(robot)
+    #PrintMap(robot)
     #time.sleep(0.5)
     if(previousmove == "a"):
         print "Moving Forward"
@@ -414,7 +412,7 @@ def CalculateMove():
 
 
 def RunExplore():
-    while(1==1):
+    while(1 == 1):
         if(CalculateMove() == -1):
             print "Exploration Completed"
             return EmptyArena

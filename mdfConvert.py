@@ -1,5 +1,3 @@
-import ShortestPath as SP
-
 def obstacleArrayToMDF(arena):
     mdf = ""
     for i in range(20, 0, -1):
@@ -36,33 +34,40 @@ def ExploreArrayToMDF(arena):
 
 def MDFtoObstacleArray(mdf, arena):
     #mdf = hexToBin(mdf)
-    for i  in range(19,-1,-1):
-        for j in range(15):
+    print mdf
+    for i  in range(20,0,-1):
+        for j in range(17):
             if (arena[i][j] == 0):
                 if (mdf[0] == "1"):
                     arena[i][j] = 1
                 mdf = mdf[1:]
-    SP.printArena(arena)
     return arena
     
 
 def MDFtoExploreArray(mdf):
     arena = []
     shortmdf = mdf[2:-2]
-    #shortmdf = hexToBin(mdf)[2:-2]
-    for i in range(19,-1,-1):
+    print len(shortmdf)
+    for i in range(22):
         arena.append([])
-    for i in range(19,-1,-1):
-        for j in range(15):
-            #if (i == 0 or i == 21 or j == 0 or j ==16):
-            #    arena[i].append(1)
-            #else:
-                arena[i].append(abs(int(shortmdf[0])-1))
+
+    for i in range(21,-1,-1):
+        for j in range(17):
+            if (i == 0 or i == 21 or j == 0 or j ==16):
+                arena[i].append(1)
+            else:
+                if shortmdf[0] == 0:
+                    arena[i].append(1)
+                else:
+                    arena[i].append(0)
                 shortmdf = shortmdf[1:]
-    SP.printArena(arena)
     return arena
 
 def MDFtoSPArena(mdf1,mdf2):
+    mdf1 = hexToBin(mdf1)
+    print mdf1
+    mdf2 = hexToBin(mdf2)
+    print mdf2
     arena = MDFtoObstacleArray(mdf2,MDFtoExploreArray(mdf1))
     return arena
     
@@ -75,4 +80,10 @@ def binToHex(mdf):
     return hexstr
 
 def hexToBin(mdf):
-    return bin(int(mdf,16))[2:]
+    binstr = ""
+    for i in range(len(mdf)):
+        strbin = bin(int(mdf[0],16))[2:]
+        strbin = "0"*(4-len(strbin))+strbin
+        binstr += strbin
+        mdf = mdf[1:]
+    return binstr

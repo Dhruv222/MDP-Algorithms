@@ -23,6 +23,11 @@ class Simulator:
         self.frame.pack(side="right")
 
         #Buttons
+        self.mdfEntry1 = Entry(self.frame)
+        self.mdfEntry1.pack()
+        self.mdfEntry2 = Entry(self.frame)
+        self.mdfEntry2.pack()
+        self.CreateArena_button = Button(self.frame, width=20, height=2, text="Create Map", bg="orange", command=self.initArena).pack()
         self.reset_button = Button(self.frame, width=20, height=2, text="Reset Map", bg="orange", command=self.initCanvas).pack()
         self.explore_button = Button(self.frame, width=20, height=2, text="Run Exploration", bg="orange", command=self.RunExplore).pack()
         self.shortestPath_button = Button(self.frame, width=20, height=2, text="Run ShortestPath", bg="orange", command=self.RunShortestPath).pack()
@@ -38,6 +43,16 @@ class Simulator:
                     self.canvas.itemconfig(self.widgetArray[i][j], fill="#2a933c")
                 elif(exploredArena[i][j] == 3):
                     self.canvas.itemconfig(self.widgetArray[i][j], fill="#99dda4")
+        return
+
+
+    def initArena(self):
+        mdf1 = self.mdfEntry1.get()
+        mdf2 = self.mdfEntry2.get()
+        newArena = mdfConvert.MDFtoSPArena(mdf1, mdf2)
+        self.initCanvas()
+        self.UpdateCanvas(newArena)
+        self.arena = newArena
         return
     
     def UpdateShortestCanvas(self, Arena):
@@ -58,7 +73,7 @@ class Simulator:
         return
 
     def clickReset(self):
-        self.initCanvas(self.canvas, self.widgetArray)
+        self.initCanvas()
         return
 
     def RunExplore(self):
@@ -72,9 +87,13 @@ class Simulator:
             global mdfString1,mdfString2
             tkMessageBox.showinfo("Run Exploration", "Exploration Complete")
             mdfString1 = mdfConvert.ExploreArrayToMDF(self.exploredArena)
-            tkMessageBox.showinfo("MDF String for Exploration", mdfConvert.binToHex(mdfString1))
+            mdfHex = mdfConvert.binToHex(mdfString1)
+            print mdfHex
+            tkMessageBox.showinfo("MDF String for Exploration", mdfHex)
             mdfString2 = mdfConvert.obstacleArrayToMDF(self.exploredArena)
-            tkMessageBox.showinfo("MDF String for Obstacles", mdfConvert.binToHex(mdfString2))
+            mdfHex = mdfConvert.binToHex(mdfString2)
+            print mdfHex
+            tkMessageBox.showinfo("MDF String for Obstacles", mdfHex)
             return
 
 
