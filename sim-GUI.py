@@ -7,6 +7,9 @@ import ShortestPath as SP
 import mdfConvert
 
 global mdfString1,mdfString2
+timeCount = 0      # timeCount = get time-limit input from user
+percentageCovered = 0   # coverage percentage explored by robot
+coverageLimit = 300 * (80/float(100))      # 80 => coverage limit input from user
 
 class Simulator:
     def __init__(self, master):
@@ -77,12 +80,26 @@ class Simulator:
         return
 
     def RunExplore(self):
+        global timeCount      # timeCount = get time-limit input from user
+        global percentageCovered    # coverage percentage explored by robot
         simulator.Arena = self.arena
         newArena = explore.CalculateMove()
         if(newArena != -1):
-            self.UpdateCanvas(newArena)
-            self.master.after(200, self.RunExplore)
-            self.exploredArena = newArena
+            if (timeCount >= 10000 or percentageCovered >= coverageLimit):
+                print "Exploration terminated!"
+            else:
+                self.UpdateCanvas(newArena)
+                self.master.after(200, self.RunExplore)
+                timeCount += 200
+                print timeCount
+                self.exploredArena = newArena
+                percentageCovered = 0
+                for i in range(1,len(newArena)-1):
+                    for j in range(1,len(newArena[i])-1):
+                        if not(newArena[i][j] == 0):
+                            percentageCovered += 1
+                print percentageCovered
+                
         else:
             global mdfString1,mdfString2
             tkMessageBox.showinfo("Run Exploration", "Exploration Complete")
