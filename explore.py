@@ -1,7 +1,7 @@
 import simulator
 import time
 import pc_test_socket
-import sim_gui
+
 
 EmptyArena=[[0 for i in range(17)] for j in range(22)]
 
@@ -349,7 +349,6 @@ def UpdateArena(robot):
 '''
 def LeftSideEmpty(robot):
     if(robot.orientation == 0):
-        print "inside this"
         return EmptyArena[robot.topLeft['row']][robot.topLeft['col']-1] != 1 and EmptyArena[robot.bottomLeft['row']][robot.bottomLeft['col']-1] != 1 and EmptyArena[robot.bottomLeft['row'] - 1][robot.bottomLeft['col'] - 1] != 1
     elif(robot.orientation == 1):
         return EmptyArena[robot.topLeft['row']-1][robot.topLeft['col']] != 1 and EmptyArena[robot.bottomLeft['row']-1][robot.bottomLeft['col']] != 1 and EmptyArena[robot.bottomLeft['row'] - 1][robot.bottomLeft['col'] + 1] != 1
@@ -372,44 +371,44 @@ def FrontSideEmpty(robot):
 
 
                 
-
+global previousmove 
 def CalculateMove():
     count = 0
-    previousmove = ""
-    while(1 == 1):
-        count += 1
-        print count
-        if(robot.CurrPos == GoalPos):
-            if (GoalPos == StartPos):
-                print "Completed"
-                return -1
-            else:
-                print "Reached Goal Position"
-                GoalPos['row'] = StartPos['row']
-                GoalPos['col'] = StartPos['col']
+    global previousmove
+    print GoalPos['row'], GoalPos['col']
+    print robot.CurrPos['row'], robot.CurrPos['col'] 
+    if(robot.CurrPos == GoalPos):
+        if (GoalPos == StartPos):
+            print "Completed"
+            return -1
         else:
-            CheckSensor(robot)
-            UpdateArena(robot)
-        PrintMap(robot)
-        time.sleep(0.5)
-        if(previousmove == "a"):
-            print "Moving Forward"
-            previousmove = "w"
-            MoveRobot(robot, 1)
+            print "Reached Goal Position"
+            GoalPos['row'] = StartPos['row']
+            GoalPos['col'] = StartPos['col']
 
-        elif(LeftSideEmpty(robot)):
-            print "Turning left"
-            previousmove = "a"
-            TurnRobot(robot, "a")
-            
-        elif(FrontSideEmpty(robot)):
-            print "Moving Forward"
-            previousmove = "w"
-            MoveRobot(robot, 1)
-        else:
-            print "Turning Right"
-            previousmove = "d"
-            TurnRobot(robot, "d")
+    else:
+        CheckSensor(robot)
+        UpdateArena(robot)
+    PrintMap(robot)
+    #time.sleep(0.5)
+    if(previousmove == "a"):
+        print "Moving Forward"
+        previousmove = "w"
+        MoveRobot(robot, 1)
+    elif(LeftSideEmpty(robot)):
+        print "Turning left"
+        previousmove = "a"
+        TurnRobot(robot, "a")
+         
+    elif(FrontSideEmpty(robot)):
+        print "Moving Forward"
+        previousmove = "w"
+        MoveRobot(robot, 1)
+    else:
+        print "Turning Right"
+        previousmove = "d"
+        TurnRobot(robot, "d")
+    return EmptyArena
         
 
 
@@ -419,7 +418,6 @@ def RunExplore():
         if(CalculateMove() == -1):
             print "Exploration Completed"
             return EmptyArena
-
 robot = ArduinoRobot()
+previousmove = ""
 #comThread = pc_test_socket.Test()
-RunExplore()
