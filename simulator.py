@@ -5,15 +5,15 @@ Arena = [
     [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
-    [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-    [1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
+    [1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
     [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
     [1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1],
+    [1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1],
@@ -48,22 +48,41 @@ def getSensorArray(orientation, CurrPos):
         'row': CurrPos['row'],
         'col': CurrPos['col']
     }
-    topLeft= {
+    topCenter = {
         'row': CurrPos['row'],
         'col': CurrPos['col']-1
     }
+    topLeft= {
+        'row': CurrPos['row'],
+        'col': CurrPos['col']-2
+    }
     bottomLeft = {
-        'row': CurrPos['row']+1,
+        'row': CurrPos['row']+2,
+        'col': CurrPos['col']-2
+    }
+    bottomCenter = {
+        'row': CurrPos['row']+2,
         'col': CurrPos['col']-1
     }
     bottomRight = {
+        'row': CurrPos['row']+2,
+        'col': CurrPos['col']
+    }
+    LeftCenter = {
+        'row': CurrPos['row']+1,
+        'col': CurrPos['col']-2
+    }
+    RightCenter = {
         'row': CurrPos['row']+1,
         'col': CurrPos['col']
     }
+    
     Arena[topRight['row']][topRight['col']] = 4
+    Arena[topCenter['row']][topCenter['col']] = 4
     Arena[topLeft['row']][topLeft['col']] = 4
     Arena[bottomRight['row']][bottomRight['col']] = 4
     Arena[bottomLeft['row']][bottomLeft['col']] = 4
+    
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -72,6 +91,16 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
+    
+    count = 0
+    for i in range(1,MaxSensorMax+1):
+        count += 1
+        if(Arena[LeftCenter['row']][LeftCenter['col']-i] == 1):
+            SensorMaxValues.append(count)
+            break
+        elif(i == MaxSensorMax):
+            SensorMaxValues.append(0)
+    
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -80,6 +109,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
+    
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -88,6 +118,16 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
+    
+    count = 0
+    for i in range(1,MaxSensorMax+1):
+        count += 1
+        if(Arena[topCenter['row']-i][topCenter['col']] == 1):
+            SensorMaxValues.append(count)
+            break
+        elif(i == MaxSensorMax):
+            SensorMaxValues.append(0)
+    
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -96,6 +136,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
+    
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -104,6 +145,16 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
+    
+    count = 0
+    for i in range(1,MaxSensorMax+1):
+        count += 1
+        if(Arena[RightCenter['row']][RightCenter['col']+i] == 1):
+            SensorMaxValues.append(count)
+            break
+        elif(i == MaxSensorMax):
+            SensorMaxValues.append(0)
+    
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -112,6 +163,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
+    
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -120,6 +172,16 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
+    
+    count = 0
+    for i in range(1,MaxSensorMax+1):
+        count += 1
+        if(Arena[bottomCenter['row']+i][bottomCenter['col']] == 1):
+            SensorMaxValues.append(count)
+            break
+        elif(i == MaxSensorMax):
+            SensorMaxValues.append(0)
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -130,18 +192,18 @@ def getSensorArray(orientation, CurrPos):
             SensorMaxValues.append(0)
     
     SensorAllDirection = [
-        ['LeftBehind', 'LeftAhead', 'FrontLeft', 'FrontRight', 'RightAhead', 'RightBehind', 'skip', 'skip'],
-        ['skip','skip','LeftBehind', 'LeftAhead', 'FrontLeft', 'FrontRight', 'RightAhead', 'RightBehind'],
-        ['RightAhead', 'RightBehind','skip','skip','LeftBehind', 'LeftAhead', 'FrontLeft', 'FrontRight'],
-        ['FrontLeft', 'FrontRight', 'RightAhead', 'RightBehind','skip','skip','LeftBehind', 'LeftAhead']
+        ['LeftBehind', 'skip', 'LeftAhead', 'FrontLeft', 'FrontCenter', 'FrontRight', 'RightAhead', 'skip', 'skip', 'skip','skip','skip'],
+        ['skip','skip','skip','LeftBehind','skip', 'LeftAhead', 'FrontLeft', 'FrontCenter', 'FrontRight', 'RightAhead','skip','skip'],
+        ['RightAhead','skip','skip','skip','skip','skip','LeftBehind','skip', 'LeftAhead', 'FrontLeft', 'FrontCenter', 'FrontRight'],
+        ['FrontLeft', 'FrontCenter', 'FrontRight', 'RightAhead', 'skip','skip','skip', 'skip','skip','LeftBehind','skip', 'LeftAhead']
     ]
     SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('LeftBehind')])
     SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('LeftAhead')])
     SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('FrontLeft')])
+    SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('FrontCenter')])
     SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('FrontRight')])
     SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('RightAhead')])
-    SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('RightBehind')])
-    
+        
     return SensorArray
 
 def PrintMap():
