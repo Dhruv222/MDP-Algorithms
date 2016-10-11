@@ -1,6 +1,7 @@
 import simulator
 import time
 import pc_test_socket
+import sim_gui
 
 EmptyArena=[[0 for i in range(17)] for j in range(22)]
 
