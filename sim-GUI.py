@@ -6,6 +6,7 @@ import simulator
 import ShortestPath as SP
 import mdfConvert
 
+global mdfString1,mdfString2
 
 class Simulator:
     def __init__(self, master):
@@ -68,17 +69,18 @@ class Simulator:
             self.master.after(200, self.RunExplore)
             self.exploredArena = newArena
         else:
+            global mdfString1,mdfString2
             tkMessageBox.showinfo("Run Exploration", "Exploration Complete")
-            MDFstring = mdfConvert.ExploreArrayToMDF(self.exploredArena)
-            tkMessageBox.showinfo("MDF String for Exploration", MDFstring)
-            MDFstring = mdfConvert.obstacleArrayToMDF(self.exploredArena)
-            tkMessageBox.showinfo("MDF String for Obstacles", MDFstring)
+            mdfString1 = mdfConvert.ExploreArrayToMDF(self.exploredArena)
+            tkMessageBox.showinfo("MDF String for Exploration", mdfConvert.binToHex(mdfString1))
+            mdfString2 = mdfConvert.obstacleArrayToMDF(self.exploredArena)
+            tkMessageBox.showinfo("MDF String for Obstacles", mdfConvert.binToHex(mdfString2))
             return
 
 
     def RunShortestPath(self):
         if(self.count==0):
-            SP.shortestPath()
+            SP.shortestPath(mdfString1,mdfString2)
         if(self.count<len(SP.finalPath)):
             shortestarena = SP.printCommand(self.count)
             self.UpdateShortestCanvas(shortestarena)

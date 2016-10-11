@@ -6,6 +6,8 @@ import explore
 import random
 import math
 import operator
+import mdfConvert
+
 x_max = 15
 y_max = 20
     
@@ -15,9 +17,9 @@ goalPos  = {'x':14,'y':0}
 
 # random arena generator
 
-
 def getArena():
     exploreArena = explore.RunExplore()
+    
     for i in range(20):
         for j in range(15):
             arena[i][j] = exploreArena[i+1][j+1]
@@ -367,13 +369,16 @@ def printCommand(count):
 
 
 # insert shortestPath() to start finding shortest path    
-def shortestPath():
+def shortestPath(mdfString1,mdfString2):
     global arena
     arena = [[0 for i in range(15)] for j in range (20)]
     
-    getArena()
+    #getArena()
     #arena = readArenaTxt()
-    printArena(arena)
+    print mdfString1
+    print mdfString2
+    arena = mdfConvert.MDFtoSPArena(mdfString1,mdfString2)
+    #printArena(arena)
 
     queueFirstNode = {'xpos':startPos['x'], 'ypos':startPos['y'], 'orientation':0, 'pathArray':[], 'pathCost':0, 'hCost':calculateHCost(startPos['x'],startPos['y'])}
 
