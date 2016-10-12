@@ -114,11 +114,14 @@ class Simulator:
             
             self.mdfEntry1.delete(0, END)
             self.mdfEntry1.insert(0,self.mdfString1)
+
             print self.mdfString1
             tkMessageBox.showinfo("MDF String for Exploration", self.mdfString1)
             self.mdfString2 = mdfConvert.obstacleArrayToMDF(self.exploredArena)
+            
             self.mdfEntry2.delete(0, END)
             self.mdfEntry2.insert(0,self.mdfString2)
+            
             print self.mdfString2
             tkMessageBox.showinfo("MDF String for Obstacles", self.mdfString2)
             return
@@ -149,6 +152,7 @@ class Simulator:
         }
         explore.robot = explore.ArduinoRobot()
         explore.previousmove = ""
+        self.timeCount = 0
 
         self.widgetArray = [[0 for i in range(17)] for j in range(22)]
         self.arena = [[0 for i in range(17)] for j in range(22)]
