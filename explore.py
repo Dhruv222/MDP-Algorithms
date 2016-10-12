@@ -48,6 +48,7 @@ class ArduinoRobot:
         EmptyArena[self.topCenter['row']][self.topCenter['col']] = 2
         EmptyArena[self.bottomLeft['row']][self.bottomLeft['col']] = 2
         EmptyArena[self.bottomRight['row']][self.bottomRight['col']] = 2
+        EmptyArena[(self.bottomRight['row']+self.bottomLeft['row'])/2][(self.bottomRight['col']+self.bottomLeft['col'])/2] = 2
 
     def UpdateCornerPositions(self):
         orientation = self.orientation

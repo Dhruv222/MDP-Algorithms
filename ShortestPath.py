@@ -394,8 +394,10 @@ def shortestPath(mdfString1,mdfString2):
     #arena = readArenaTxt()
     print mdfString1
     print mdfString2
-    arena = mdfConvert.MDFtoSPArena(mdfString1,mdfString2)
-    #printArena(arena)
+    arena = mdfConvert.MDFtoSPArena(mdfString1,mdfString2)[1:21]
+    for i in range(len(arena)):
+        arena[i] = arena[i][1:16]
+    printArena(arena)
 
     queueFirstNode = {'xpos':startPos['x'], 'ypos':startPos['y'], 'orientation':0, 'pathArray':[], 'pathCost':0, 'hCost':calculateHCost(startPos['x'],startPos['y'])}
 

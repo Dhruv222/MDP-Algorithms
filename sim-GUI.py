@@ -6,8 +6,6 @@ import simulator
 import ShortestPath as SP
 import mdfConvert
 
-global mdfString1,mdfString2
-
 class Simulator:
     def __init__(self, master):
         self.master = master
@@ -21,6 +19,16 @@ class Simulator:
         
         self.frame = Frame(self.master)
         self.frame.pack(side="right")
+        
+        #For Time and Coverage Constraints
+        self.timeCount = 0
+        self.CoverageLimit = 100
+        self.timeLimit = 500
+        self.percentageCovered = 0
+
+        #For MdfString generation and usage
+        self.mdfString1 = ""
+        self.mdfString2 = ""
 
         #Buttons
         self.mdfEntry1 = Entry(self.frame)
@@ -29,6 +37,12 @@ class Simulator:
         self.mdfEntry2.pack()
         self.CreateArena_button = Button(self.frame, width=20, height=2, text="Create Map", bg="orange", command=self.initArena).pack()
         self.reset_button = Button(self.frame, width=20, height=2, text="Reset Map", bg="orange", command=self.initCanvas).pack()
+        self.TimeEntry = Entry(self.frame)
+        self.TimeEntry.pack()
+        self.TimeEntry.insert(0, "500")
+        self.PercentEntry = Entry(self.frame)
+        self.PercentEntry.pack()
+        self.PercentEntry.insert(0, "100")
         self.explore_button = Button(self.frame, width=20, height=2, text="Run Exploration", bg="orange", command=self.RunExplore).pack()
         self.shortestPath_button = Button(self.frame, width=20, height=2, text="Run ShortestPath", bg="orange", command=self.RunShortestPath).pack()
 
@@ -77,29 +91,42 @@ class Simulator:
         return
 
     def RunExplore(self):
+        self.timeLimit = int(self.TimeEntry.get())
+        self.CoverageLimit = int(self.PercentEntry.get())
         simulator.Arena = self.arena
         newArena = explore.CalculateMove()
         if(newArena != -1):
+            self.percentageCovered = 0
+            for i in range(1, len(newArena)-1):
+                for j in range(1, len(newArena[i])-1):
+                    if newArena[i][j] != 0:
+                        self.percentageCovered += 1
+            self.percentageCovered /= 3
+        print self.percentageCovered, self.CoverageLimit
+        if(newArena != -1 and self.percentageCovered <= self.CoverageLimit and self.timeCount < self.timeLimit):
             self.UpdateCanvas(newArena)
             self.master.after(200, self.RunExplore)
+            self.timeCount += 0.2
             self.exploredArena = newArena
         else:
-            global mdfString1,mdfString2
-            tkMessageBox.showinfo("Run Exploration", "Exploration Complete")
-            mdfString1 = mdfConvert.ExploreArrayToMDF(self.exploredArena)
-            mdfHex = mdfConvert.binToHex(mdfString1)
-            print mdfHex
-            tkMessageBox.showinfo("MDF String for Exploration", mdfHex)
-            mdfString2 = mdfConvert.obstacleArrayToMDF(self.exploredArena)
-            mdfHex = mdfConvert.binToHex(mdfString2)
-            print mdfHex
-            tkMessageBox.showinfo("MDF String for Obstacles", mdfHex)
+            tkMessageBox.showinfo("Run Exploration", "Exploration Completed with "+str(self.percentageCovered)+"'%' area covered and "+str(self.timeCount)+"secs taken.")
+            self.mdfString1 = mdfConvert.ExploreArrayToMDF(self.exploredArena)
+            
+            self.mdfEntry1.delete(0, END)
+            self.mdfEntry1.insert(0,self.mdfString1)
+            print self.mdfString1
+            tkMessageBox.showinfo("MDF String for Exploration", self.mdfString1)
+            self.mdfString2 = mdfConvert.obstacleArrayToMDF(self.exploredArena)
+            self.mdfEntry2.delete(0, END)
+            self.mdfEntry2.insert(0,self.mdfString2)
+            print self.mdfString2
+            tkMessageBox.showinfo("MDF String for Obstacles", self.mdfString2)
             return
 
 
     def RunShortestPath(self):
         if(self.count==0):
-            SP.shortestPath(mdfString1,mdfString2)
+            SP.shortestPath(self.mdfString1,self.mdfString2)
         if(self.count<len(SP.finalPath)):
             shortestarena = SP.printCommand(self.count)
             self.UpdateShortestCanvas(shortestarena)

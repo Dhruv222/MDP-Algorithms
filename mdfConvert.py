@@ -8,7 +8,7 @@ def obstacleArrayToMDF(arena):
                 else:
                     mdf += "0"
     mdf = mdf + "0"*(8 - len(mdf)%8)
-    #mdfHex1 = binToHex(mdf)
+    mdf = binToHex(mdf)
     return mdf
                 
 def ExploreArrayToMDF(arena):
@@ -30,10 +30,11 @@ def ExploreArrayToMDF(arena):
                     mdf += "1"
 
     mdf += "11"
+    mdf = binToHex(mdf)
     return mdf
 
 def MDFtoObstacleArray(mdf, arena):
-    #mdf = hexToBin(mdf)
+    mdf = hexToBin(mdf)
     print mdf
     for i  in range(20,0,-1):
         for j in range(17):
@@ -46,6 +47,7 @@ def MDFtoObstacleArray(mdf, arena):
 
 def MDFtoExploreArray(mdf):
     arena = []
+    mdf = hexToBin(mdf)
     shortmdf = mdf[2:-2]
     print len(shortmdf)
     for i in range(22):
@@ -64,10 +66,6 @@ def MDFtoExploreArray(mdf):
     return arena
 
 def MDFtoSPArena(mdf1,mdf2):
-    mdf1 = hexToBin(mdf1)
-    print mdf1
-    mdf2 = hexToBin(mdf2)
-    print mdf2
     arena = MDFtoObstacleArray(mdf2,MDFtoExploreArray(mdf1))
     return arena
     
