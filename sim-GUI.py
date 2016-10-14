@@ -109,7 +109,7 @@ class Simulator:
         print self.percentageCovered, self.CoverageLimit
         if(newArena != -1 and self.percentageCovered <= self.CoverageLimit and self.timeCount < self.timeLimit):
             self.UpdateCanvas(newArena)
-            self.master.after(200, self.RunExplore)
+            self.master.after(50, self.RunExplore)
             self.timeCount += 0.2
             self.exploredArena = newArena
         else:
@@ -138,7 +138,7 @@ class Simulator:
             shortestarena = SP.printCommand(self.count)
             self.UpdateShortestCanvas(shortestarena)
             self.count += 1
-            self.master.after(200, self.RunShortestPath)
+            self.master.after(50, self.RunShortestPath)
         else:
             tkMessageBox.showinfo("Run ShortestPath", "Shortest Path Complete!")
             self.count = 0

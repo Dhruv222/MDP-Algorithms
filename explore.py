@@ -144,12 +144,12 @@ class ArduinoRobot:
         self.UpdateCurPosVisited()
 
 SensorMax = {
-    'LeftBehind' : 5,
-    'LeftAhead' : 5,
-    'FrontLeft' : 5,
-    'FrontCenter' : 5,
-    'FrontRight' : 5,
-    'RightAhead' : 5
+    'LeftBehind' : 3,
+    'LeftAhead' : 3,
+    'FrontLeft' : 3,
+    'FrontCenter' : 3,
+    'FrontRight' : 3,
+    'RightAhead' : 6
 }
 
 SensorData = {
@@ -203,10 +203,10 @@ def PrintMap(robot):
 
 
 def CheckSensor(robot):
-    SensorArray = simulator.getSensorArray(robot.orientation, robot.CurrPos)
-    #TryArray = [x for x in comThread.receive().split(" ")]
-    #TryArray[0] = TryArray[0][-1]
-    #SensorArray = [int(x) for x in TryArray]
+    #SensorArray = simulator.getSensorArray(robot.orientation, robot.CurrPos)
+    TryArray = [x for x in comThread.receive().split(" ")]
+    TryArray[0] = TryArray[0][-1]
+    SensorArray = [int(x) for x in TryArray]
     SensorData['LeftBehind'] = SensorArray[0]
     SensorData['LeftAhead'] = SensorArray[1]
     SensorData['FrontLeft'] = SensorArray[2]
@@ -217,7 +217,7 @@ def CheckSensor(robot):
 
 
 def TurnRobot(robot, direction):
-    #comThread.write(direction)
+    comThread.write(direction)
     #DataChannel.write("turn "+direction)
     if ( direction == "d"):
         robot.orientation = (robot.orientation + 1) % 4
@@ -228,7 +228,7 @@ def TurnRobot(robot, direction):
     return
 
 def MoveRobot(robot, blocks):
-    #comThread.write("w")
+    comThread.write("w")
     #DataChannel.write("move "+blocks)
     pastPos = robot.CurrPos
     if(robot.orientation==0):
@@ -449,4 +449,6 @@ def RunExplore():
             return EmptyArena
 robot = ArduinoRobot()
 previousmove = ""
-#comThread = pc_test_socket.Test()
+comThread = pc_test_socket.Test()
+comThread.write("r")
+
