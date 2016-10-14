@@ -40,6 +40,10 @@ class ArduinoRobot:
         'col': StartPos['col']-1,
         'row': StartPos['row']
     }
+    bottomCenter = {
+        'col': StartPos['col']-1,
+        'row': StartPos['row']+2
+    }
     orientation = 0
 
     def UpdateCurPosVisited(self):
@@ -48,7 +52,13 @@ class ArduinoRobot:
         EmptyArena[self.topCenter['row']][self.topCenter['col']] = 2
         EmptyArena[self.bottomLeft['row']][self.bottomLeft['col']] = 2
         EmptyArena[self.bottomRight['row']][self.bottomRight['col']] = 2
-        EmptyArena[(self.bottomRight['row']+self.bottomLeft['row'])/2][(self.bottomRight['col']+self.bottomLeft['col'])/2] = 2
+        EmptyArena[self.bottomCenter['row']][self.bottomCenter['col']] = 2 
+        #LeftCenter
+        EmptyArena[(self.topLeft['row']+self.bottomLeft['row'])/2][(self.topLeft['col']+self.bottomLeft['col'])/2] = 2 
+        #RightCenter
+        EmptyArena[(self.bottomRight['row']+self.topRight['row'])/2][(self.bottomRight['col']+self.topRight['col'])/2] = 2 
+        #Middle
+        EmptyArena[(self.topCenter['row']+self.bottomCenter['row'])/2][(self.topCenter['col']+self.bottomCenter['col'])/2] = 2 
 
     def UpdateCornerPositions(self):
         orientation = self.orientation
@@ -69,6 +79,9 @@ class ArduinoRobot:
             self.bottomLeft['col'] = CurrPos['col']-2
             self.bottomLeft['row'] = CurrPos['row']+2
 
+            self.bottomCenter['col'] = CurrPos['col']-1
+            self.bottomCenter['row'] = CurrPos['row']+2
+
         elif(orientation == 1):
 
             self.topLeft['col'] = CurrPos['col']
@@ -86,6 +99,9 @@ class ArduinoRobot:
             self.topCenter['col'] = CurrPos['col']
             self.topCenter['row'] = CurrPos['row'] + 1
 
+            self.bottomCenter['col'] = CurrPos['col']-2
+            self.bottomCenter['row'] = CurrPos['row']+1
+
         elif(orientation == 2):
             self.bottomLeft['col'] = CurrPos['col']
             self.bottomLeft['row'] = CurrPos['row']
@@ -102,6 +118,9 @@ class ArduinoRobot:
             self.topCenter['col'] = CurrPos['col']-1
             self.topCenter['row'] = CurrPos['row']+2
 
+            self.bottomCenter['col'] = CurrPos['col']-1
+            self.bottomCenter['row'] = CurrPos['row']
+
         else:
             self.bottomRight['col'] = CurrPos['col']
             self.bottomRight['row'] = CurrPos['row']
@@ -117,6 +136,9 @@ class ArduinoRobot:
 
             self.bottomLeft['col'] = CurrPos['col']
             self.bottomLeft['row'] = CurrPos['row']+2
+
+            self.bottomCenter['col'] = CurrPos['col']
+            self.bottomCenter['row'] = CurrPos['row']+1
 
     def __init__(self):
         self.UpdateCurPosVisited()
@@ -163,13 +185,21 @@ def PrintMap(robot):
     for i in range(len(EmptyArena)):
         printArena.append(list(EmptyArena[i]))
     printArena[robot.topRight['row']][robot.topRight['col']] = 6
-    printArena[robot.bottomRight['row']][robot.bottomRight['col']] = 5
     printArena[robot.topLeft['row']][robot.topLeft['col']] = 6
     printArena[robot.topCenter['row']][robot.topCenter['col']] = 6
     printArena[robot.bottomLeft['row']][robot.bottomLeft['col']] = 5
+    printArena[robot.bottomRight['row']][robot.bottomRight['col']] = 5
+    printArena[robot.bottomCenter['row']][robot.bottomCenter['col']] = 5
+    #LeftCenter
+    printArena[(robot.topLeft['row']+robot.bottomLeft['row'])/2][(robot.topLeft['col']+robot.bottomLeft['col'])/2] = 5
+    #RightCenter
+    printArena[(robot.bottomRight['row']+robot.topRight['row'])/2][(robot.bottomRight['col']+robot.topRight['col'])/2] = 5 
+    #Middle
+    printArena[(robot.topCenter['row']+robot.bottomCenter['row'])/2][(robot.topCenter['col']+robot.bottomCenter['col'])/2] = 5 
     for i in range(len(printArena)):
         print printArena[i]
     print 
+    return printArena
 
 
 def CheckSensor(robot):
@@ -407,7 +437,7 @@ def CalculateMove():
         print "Turning Right"
         previousmove = "d"
         TurnRobot(robot, "d")
-    return EmptyArena
+    return PrintMap(robot)
         
 
 

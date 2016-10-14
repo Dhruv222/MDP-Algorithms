@@ -57,6 +57,10 @@ class Simulator:
                     self.canvas.itemconfig(self.widgetArray[i][j], fill="#2a933c")
                 elif(exploredArena[i][j] == 3):
                     self.canvas.itemconfig(self.widgetArray[i][j], fill="#99dda4")
+                elif(exploredArena[i][j] == 6):
+                    self.canvas.itemconfig(self.widgetArray[i][j], fill="#00245e")
+                elif(exploredArena[i][j] == 5):
+                    self.canvas.itemconfig(self.widgetArray[i][j], fill="#629bf7")
         return
 
 
