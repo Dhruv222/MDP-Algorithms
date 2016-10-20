@@ -150,7 +150,7 @@ SensorMax = {
     'FrontLeft' : 3,
     'FrontCenter' : 3,
     'FrontRight' : 3,
-    'RightAhead' : 6
+    'RightAhead' : 7
 }
 
 SensorData = {
@@ -205,10 +205,13 @@ def PrintMap(robot):
 
 def CheckSensor(robot):
     #SensorArray = simulator.getSensorArray(robot.orientation, robot.CurrPos)
+    print "Checking Sensors"
     data = comThread.receive()
     if data == 'r':
+        print "Sensor said 'start'"
         data = comThread.receive()
-    TryArray = [x for x in comThread.receive().split(" ")]
+    print "Sensor Value", data
+    TryArray = [x for x in data.split(" ")]
     TryArray[0] = TryArray[0][-1]
     SensorArray = [int(x) for x in TryArray]
     #SensorData['LeftBehind'] = SensorArray[0]
@@ -421,10 +424,14 @@ def CalculateMove():
                 GoalPos['col'] = StartPos['col']
 
         else:
+            print "going for sensors"
             CheckSensor(robot)
+            print "Updating arena"
             UpdateArena(robot)
+            print "Arena Updated"
         #PrintMap(robot)
         #time.sleep(0.5)
+        map = PrintMap(robot)
         if(previousmove == "a"):
             print "Moving Forward"
             previousmove = "w"
@@ -448,7 +455,7 @@ def CalculateMove():
         print("mdf2:", mdf2)
         comThread.write("MDF1:"+mdf1)
         comThread.write("MDF2:"+mdf2)
-        return PrintMap(robot)
+        return map
     except Exception as e:
         comThread.close()
         print("Error: ", e)
@@ -458,3 +465,8 @@ robot = ArduinoRobot()
 previousmove = ""
 comThread = pc_test_socket.Test()
 
+# while True:
+#     time.sleep(1)
+#     data = comThread.receive()
+#     if data:
+#         print data
