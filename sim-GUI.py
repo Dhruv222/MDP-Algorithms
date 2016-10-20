@@ -16,10 +16,10 @@ class Simulator:
         self.widgetArray = [[0 for i in range(17)] for j in range(22)]
         self.arena = [[0 for i in range(17)] for j in range(22)]
         self.exploredArena = [[0 for i in range(17)] for j in range(22)]
-        
+
         self.frame = Frame(self.master)
         self.frame.pack(side="right")
-        
+
         #For Time and Coverage Constraints
         self.timeCount = 0
         self.CoverageLimit = 100
@@ -72,7 +72,7 @@ class Simulator:
         self.UpdateCanvas(newArena)
         self.arena = newArena
         return
-    
+
     def UpdateShortestCanvas(self, Arena):
         for i in range(20):
             for j in range(15):
@@ -109,23 +109,23 @@ class Simulator:
         print self.percentageCovered, self.CoverageLimit
         if(newArena != -1 and self.percentageCovered <= self.CoverageLimit and self.timeCount < self.timeLimit):
             self.UpdateCanvas(newArena)
-            self.master.after(50, self.RunExplore)
+            self.master.after(10, self.RunExplore)
             self.timeCount += 0.2
             self.exploredArena = newArena
         else:
             tkMessageBox.showinfo("Run Exploration", "Exploration Completed with "+str(self.percentageCovered)+"'%' area covered and "+str(self.timeCount)+"secs taken.")
             self.mdfString1 = mdfConvert.ExploreArrayToMDF(self.exploredArena)
-            
+
             self.mdfEntry1.delete(0, END)
             self.mdfEntry1.insert(0,self.mdfString1)
 
             print self.mdfString1
             tkMessageBox.showinfo("MDF String for Exploration", self.mdfString1)
             self.mdfString2 = mdfConvert.obstacleArrayToMDF(self.exploredArena)
-            
+
             self.mdfEntry2.delete(0, END)
             self.mdfEntry2.insert(0,self.mdfString2)
-            
+
             print self.mdfString2
             tkMessageBox.showinfo("MDF String for Obstacles", self.mdfString2)
             return

@@ -53,13 +53,13 @@ class ArduinoRobot:
         EmptyArena[self.topCenter['row']][self.topCenter['col']] = 2
         EmptyArena[self.bottomLeft['row']][self.bottomLeft['col']] = 2
         EmptyArena[self.bottomRight['row']][self.bottomRight['col']] = 2
-        EmptyArena[self.bottomCenter['row']][self.bottomCenter['col']] = 2 
+        EmptyArena[self.bottomCenter['row']][self.bottomCenter['col']] = 2
         #LeftCenter
-        EmptyArena[(self.topLeft['row']+self.bottomLeft['row'])/2][(self.topLeft['col']+self.bottomLeft['col'])/2] = 2 
+        EmptyArena[(self.topLeft['row']+self.bottomLeft['row'])/2][(self.topLeft['col']+self.bottomLeft['col'])/2] = 2
         #RightCenter
-        EmptyArena[(self.bottomRight['row']+self.topRight['row'])/2][(self.bottomRight['col']+self.topRight['col'])/2] = 2 
+        EmptyArena[(self.bottomRight['row']+self.topRight['row'])/2][(self.bottomRight['col']+self.topRight['col'])/2] = 2
         #Middle
-        EmptyArena[(self.topCenter['row']+self.bottomCenter['row'])/2][(self.topCenter['col']+self.bottomCenter['col'])/2] = 2 
+        EmptyArena[(self.topCenter['row']+self.bottomCenter['row'])/2][(self.topCenter['col']+self.bottomCenter['col'])/2] = 2
 
     def UpdateCornerPositions(self):
         orientation = self.orientation
@@ -90,7 +90,7 @@ class ArduinoRobot:
 
             self.bottomLeft['col'] = CurrPos['col']-2
             self.bottomLeft['row'] = CurrPos['row']
-       
+
             self.bottomRight['col'] = CurrPos['col']-2
             self.bottomRight['row'] = CurrPos['row']+2
 
@@ -159,7 +159,7 @@ SensorData = {
     'FrontLeft' : 0,
     'FrontCenter' : 0,
     'FrontRight' : 0,
-    'RightAhead' : 0 
+    'RightAhead' : 0
 }
 
 mulfactor={
@@ -194,12 +194,12 @@ def PrintMap(robot):
     #LeftCenter
     printArena[(robot.topLeft['row']+robot.bottomLeft['row'])/2][(robot.topLeft['col']+robot.bottomLeft['col'])/2] = 5
     #RightCenter
-    printArena[(robot.bottomRight['row']+robot.topRight['row'])/2][(robot.bottomRight['col']+robot.topRight['col'])/2] = 5 
+    printArena[(robot.bottomRight['row']+robot.topRight['row'])/2][(robot.bottomRight['col']+robot.topRight['col'])/2] = 5
     #Middle
-    printArena[(robot.topCenter['row']+robot.bottomCenter['row'])/2][(robot.topCenter['col']+robot.bottomCenter['col'])/2] = 5 
+    printArena[(robot.topCenter['row']+robot.bottomCenter['row'])/2][(robot.topCenter['col']+robot.bottomCenter['col'])/2] = 5
     for i in range(len(printArena)):
         print printArena[i]
-    print 
+    print
     return printArena
 
 
@@ -208,12 +208,12 @@ def CheckSensor(robot):
     TryArray = [x for x in comThread.receive().split(" ")]
     TryArray[0] = TryArray[0][-1]
     SensorArray = [int(x) for x in TryArray]
-    SensorData['LeftBehind'] = SensorArray[0]
-    SensorData['LeftAhead'] = SensorArray[1]
-    SensorData['FrontLeft'] = SensorArray[2]
-    SensorData['FrontCenter'] = SensorArray[3]
-    SensorData['FrontRight'] = SensorArray[4]
-    SensorData['RightAhead'] = SensorArray[5]
+    #SensorData['LeftBehind'] = SensorArray[0]
+    SensorData['LeftAhead'] = SensorArray[0]
+    SensorData['FrontLeft'] = SensorArray[1]
+    SensorData['FrontCenter'] = SensorArray[2]
+    SensorData['FrontRight'] = SensorArray[3]
+    SensorData['RightAhead'] = SensorArray[4]
     #SensorData['RightBehind'] = SensorArray[5]
 
 
@@ -252,11 +252,11 @@ def MoveRobot(robot, blocks):
             robot.CurrPos['col']-=1
             robot.UpdateCornerPositions()
             robot.UpdateCurPosVisited()
-    
+
     return
 
 def UpdateArena(robot):
-    
+
     if(robot.orientation==0):
         mul = mulfactor['north']
     elif(robot.orientation==1):
@@ -268,29 +268,29 @@ def UpdateArena(robot):
 
     ############################################
 
-    #LeftBehind Sensor
-    DistanceSensor = SensorMax['LeftBehind'] if SensorData['LeftBehind'] == 0 else SensorData['LeftBehind']
-      
-    for i in range(1, DistanceSensor):
-        if(EmptyArena[robot.bottomLeft['row']+mul['row'][0]*i][robot.bottomLeft['col'] + mul['col'][0]*i] != 2):
-            EmptyArena[robot.bottomLeft['row']+mul['row'][0]*i][robot.bottomLeft['col'] + mul['col'][0]*i] = 3
-        
-    #Prevent Wall Errors
-    if(SensorData['LeftBehind'] != 0):
-        EmptyArena[robot.bottomLeft['row']+mul['row'][0]*DistanceSensor][robot.bottomLeft['col'] + mul['col'][0]*DistanceSensor] = 1
+    # #LeftBehind Sensor
+    # DistanceSensor = SensorMax['LeftBehind'] if SensorData['LeftBehind'] == 0 else SensorData['LeftBehind']
 
-    elif(EmptyArena[robot.bottomLeft['row']+mul['row'][0]*DistanceSensor][robot.bottomLeft['col'] + mul['col'][0]*DistanceSensor] != 2):
-        EmptyArena[robot.bottomLeft['row']+mul['row'][0]*DistanceSensor][robot.bottomLeft['col'] + mul['col'][0]*DistanceSensor] = 3
+    # for i in range(1, DistanceSensor):
+    #     if(EmptyArena[robot.bottomLeft['row']+mul['row'][0]*i][robot.bottomLeft['col'] + mul['col'][0]*i] != 2):
+    #         EmptyArena[robot.bottomLeft['row']+mul['row'][0]*i][robot.bottomLeft['col'] + mul['col'][0]*i] = 3
+
+    # #Prevent Wall Errors
+    # if(SensorData['LeftBehind'] != 0):
+    #     EmptyArena[robot.bottomLeft['row']+mul['row'][0]*DistanceSensor][robot.bottomLeft['col'] + mul['col'][0]*DistanceSensor] = 1
+
+    # elif(EmptyArena[robot.bottomLeft['row']+mul['row'][0]*DistanceSensor][robot.bottomLeft['col'] + mul['col'][0]*DistanceSensor] != 2):
+    #     EmptyArena[robot.bottomLeft['row']+mul['row'][0]*DistanceSensor][robot.bottomLeft['col'] + mul['col'][0]*DistanceSensor] = 3
 
     ############################################
 
     #LeftAhead Sensor
     DistanceSensor = SensorMax['LeftAhead'] if SensorData['LeftAhead'] == 0 else SensorData['LeftAhead']
-      
+
     for i in range(1, DistanceSensor):
         if(EmptyArena[robot.topLeft['row']+mul['row'][0]*i][robot.topLeft['col'] + mul['col'][0]*i] != 2):
             EmptyArena[robot.topLeft['row']+mul['row'][0]*i][robot.topLeft['col'] + mul['col'][0]*i] = 3
-        
+
     #Prevent Wall Errors
     if(SensorData['LeftAhead'] != 0):
         EmptyArena[robot.topLeft['row']+mul['row'][0]*DistanceSensor][robot.topLeft['col'] + mul['col'][0]*DistanceSensor] = 1
@@ -302,11 +302,11 @@ def UpdateArena(robot):
 
     #FrontLeft Sensor
     DistanceSensor = SensorMax['FrontLeft'] if SensorData['FrontLeft'] == 0 else SensorData['FrontLeft']
-      
+
     for i in range(1, DistanceSensor):
         if(EmptyArena[robot.topLeft['row']+mul['row'][1]*i][robot.topLeft['col'] + mul['col'][1]*i] != 2):
             EmptyArena[robot.topLeft['row']+mul['row'][1]*i][robot.topLeft['col'] + mul['col'][1]*i] = 3
-        
+
     #Prevent Wall Errors
     if(SensorData['FrontLeft'] != 0):
         EmptyArena[robot.topLeft['row']+mul['row'][1]*DistanceSensor][robot.topLeft['col'] + mul['col'][1]*DistanceSensor] = 1
@@ -318,11 +318,11 @@ def UpdateArena(robot):
 
     #FrontRight Sensor
     DistanceSensor = SensorMax['FrontRight'] if SensorData['FrontRight'] == 0 else SensorData['FrontRight']
-      
+
     for i in range(1, DistanceSensor):
         if(EmptyArena[robot.topRight['row']+mul['row'][1]*i][robot.topRight['col'] + mul['col'][1]*i] != 2):
             EmptyArena[robot.topRight['row']+mul['row'][1]*i][robot.topRight['col'] + mul['col'][1]*i] = 3
-        
+
     #Prevent Wall Errors
     if(SensorData['FrontRight'] != 0):
         EmptyArena[robot.topRight['row']+mul['row'][1]*DistanceSensor][robot.topRight['col'] + mul['col'][1]*DistanceSensor] = 1
@@ -334,31 +334,31 @@ def UpdateArena(robot):
 
     #FrontCenter Sensor
     DistanceSensor = SensorMax['FrontCenter'] if SensorData['FrontCenter'] == 0 else SensorData['FrontCenter']
-      
+
     for i in range(1, DistanceSensor):
         if(EmptyArena[robot.topCenter['row']+mul['row'][1]*i][robot.topCenter['col'] + mul['col'][1]*i] != 2):
             EmptyArena[robot.topCenter['row']+mul['row'][1]*i][robot.topCenter['col'] + mul['col'][1]*i] = 3
-        
+
     #Prevent Wall Errors
     if(SensorData['FrontCenter'] != 0):
         EmptyArena[robot.topCenter['row']+mul['row'][1]*DistanceSensor][robot.topCenter['col'] + mul['col'][1]*DistanceSensor] = 1
 
     elif(EmptyArena[robot.topCenter['row']+mul['row'][1]*DistanceSensor][robot.topCenter['col'] + mul['col'][1]*DistanceSensor] != 2):
         EmptyArena[robot.topCenter['row']+mul['row'][1]*DistanceSensor][robot.topCenter['col'] + mul['col'][1]*DistanceSensor] = 3
-    
+
     ############################################
 
     #RightAhead Sensor
     DistanceSensor = SensorMax['RightAhead'] if SensorData['RightAhead'] == 0 else SensorData['RightAhead']
-      
+
     for i in range(1, DistanceSensor):
         if(EmptyArena[robot.topRight['row']+mul['row'][2]*i][robot.topRight['col'] + mul['col'][2]*i] != 2):
             EmptyArena[robot.topRight['row']+mul['row'][2]*i][robot.topRight['col'] + mul['col'][2]*i] = 3
-                
+
     #Prevent Wall Errors
     if(SensorData['RightAhead'] != 0):
         EmptyArena[robot.topRight['row']+mul['row'][2]*DistanceSensor][robot.topRight['col'] + mul['col'][2]*DistanceSensor] = 1
-        
+
     elif(EmptyArena[robot.topRight['row']+mul['row'][2]*DistanceSensor][robot.topRight['col'] + mul['col'][2]*DistanceSensor] != 2):
         EmptyArena[robot.topRight['row']+mul['row'][2]*DistanceSensor][robot.topRight['col'] + mul['col'][2]*DistanceSensor] = 3
 
@@ -366,17 +366,17 @@ def UpdateArena(robot):
 '''
     #RightBehind Sensor
     DistanceSensor = SensorMax['RightBehind'] if SensorData['RightBehind'] == 0 else SensorData['RightBehind']
-      
+
     for i in range(1, DistanceSensor):
         if(EmptyArena[robot.bottomRight['row']+mul['row'][2]*i][robot.bottomRight['col'] + mul['col'][2]*i] != 2):
             EmptyArena[robot.bottomRight['row']+mul['row'][2]*i][robot.bottomRight['col'] + mul['col'][2]*i] = 3
-                
+
     #Prevent Wall Errors
     if(SensorData['RightBehind'] != 0 ):
         EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] = 1
 
     elif(EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] != 2):
-        EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] = 3        
+        EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] = 3
 
 '''
 def LeftSideEmpty(robot):
@@ -402,9 +402,12 @@ def FrontSideEmpty(robot):
 
 
 
-                
-global previousmove 
+
+global previousmove
 def CalculateMove():
+    while start == "z":
+        start = comThread.receive()
+        print(start)
     count = 0
     global previousmove
     if(robot.CurrPos == GoalPos):
@@ -429,7 +432,7 @@ def CalculateMove():
         print "Turning left"
         previousmove = "a"
         TurnRobot(robot, "a")
-         
+
     elif(FrontSideEmpty(robot)):
         print "Moving Forward"
         previousmove = "w"
@@ -445,7 +448,7 @@ def CalculateMove():
     comThread.write("MDF1:"+mdf1)
     comThread.write("MDF2:"+mdf2)
     return PrintMap(robot)
-        
+
 
 
 
@@ -456,5 +459,6 @@ def RunExplore():
             return EmptyArena
 robot = ArduinoRobot()
 previousmove = ""
+start = "z"
 comThread = pc_test_socket.Test()
 
