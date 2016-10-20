@@ -205,6 +205,9 @@ def PrintMap(robot):
 
 def CheckSensor(robot):
     #SensorArray = simulator.getSensorArray(robot.orientation, robot.CurrPos)
+    data = comThread.receive()
+    if data == 'r':
+        data = comThread.receive()
     TryArray = [x for x in comThread.receive().split(" ")]
     TryArray[0] = TryArray[0][-1]
     SensorArray = [int(x) for x in TryArray]
@@ -363,22 +366,22 @@ def UpdateArena(robot):
         EmptyArena[robot.topRight['row']+mul['row'][2]*DistanceSensor][robot.topRight['col'] + mul['col'][2]*DistanceSensor] = 3
 
     ############################################
-'''
+
     #RightBehind Sensor
-    DistanceSensor = SensorMax['RightBehind'] if SensorData['RightBehind'] == 0 else SensorData['RightBehind']
+    # DistanceSensor = SensorMax['RightBehind'] if SensorData['RightBehind'] == 0 else SensorData['RightBehind']
 
-    for i in range(1, DistanceSensor):
-        if(EmptyArena[robot.bottomRight['row']+mul['row'][2]*i][robot.bottomRight['col'] + mul['col'][2]*i] != 2):
-            EmptyArena[robot.bottomRight['row']+mul['row'][2]*i][robot.bottomRight['col'] + mul['col'][2]*i] = 3
+    # for i in range(1, DistanceSensor):
+    #     if(EmptyArena[robot.bottomRight['row']+mul['row'][2]*i][robot.bottomRight['col'] + mul['col'][2]*i] != 2):
+    #         EmptyArena[robot.bottomRight['row']+mul['row'][2]*i][robot.bottomRight['col'] + mul['col'][2]*i] = 3
 
-    #Prevent Wall Errors
-    if(SensorData['RightBehind'] != 0 ):
-        EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] = 1
+    # #Prevent Wall Errors
+    # if(SensorData['RightBehind'] != 0 ):
+    #     EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] = 1
 
-    elif(EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] != 2):
-        EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] = 3
+    # elif(EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] != 2):
+    #     EmptyArena[robot.bottomRight['row']+mul['row'][2]*DistanceSensor][robot.bottomRight['col'] + mul['col'][2]*DistanceSensor] = 3
 
-'''
+
 def LeftSideEmpty(robot):
     if(robot.orientation == 0):
         return EmptyArena[robot.topLeft['row']][robot.topLeft['col']-1] != 1 and EmptyArena[robot.bottomLeft['row']][robot.bottomLeft['col']-1] != 1 and EmptyArena[robot.bottomLeft['row'] - 1][robot.bottomLeft['col'] - 1] != 1
@@ -405,60 +408,53 @@ def FrontSideEmpty(robot):
 
 global previousmove
 def CalculateMove():
-    while start == "z":
-        start = comThread.receive()
-        print(start)
-    count = 0
-    global previousmove
-    if(robot.CurrPos == GoalPos):
-        if (GoalPos == StartPos):
-            print "Completed"
-            return -1
+    try:
+        count = 0
+        global previousmove
+        if(robot.CurrPos == GoalPos):
+            if (GoalPos == StartPos):
+                print "Completed"
+                return -1
+            else:
+                print "Reached Goal Position"
+                GoalPos['row'] = StartPos['row']
+                GoalPos['col'] = StartPos['col']
+
         else:
-            print "Reached Goal Position"
-            GoalPos['row'] = StartPos['row']
-            GoalPos['col'] = StartPos['col']
+            CheckSensor(robot)
+            UpdateArena(robot)
+        #PrintMap(robot)
+        #time.sleep(0.5)
+        if(previousmove == "a"):
+            print "Moving Forward"
+            previousmove = "w"
+            MoveRobot(robot, 1)
+        elif(LeftSideEmpty(robot)):
+            print "Turning left"
+            previousmove = "a"
+            TurnRobot(robot, "a")
 
-    else:
-        CheckSensor(robot)
-        UpdateArena(robot)
-    #PrintMap(robot)
-    #time.sleep(0.5)
-    if(previousmove == "a"):
-        print "Moving Forward"
-        previousmove = "w"
-        MoveRobot(robot, 1)
-    elif(LeftSideEmpty(robot)):
-        print "Turning left"
-        previousmove = "a"
-        TurnRobot(robot, "a")
+        elif(FrontSideEmpty(robot)):
+            print "Moving Forward"
+            previousmove = "w"
+            MoveRobot(robot, 1)
+        else:
+            print "Turning Right"
+            previousmove = "d"
+            TurnRobot(robot, "d")
+        mdf1 = mdf.ExploreArrayToMDF(EmptyArena)
+        mdf2 = mdf.obstacleArrayToMDF(EmptyArena)
+        print("mdf1:", mdf1)
+        print("mdf2:", mdf2)
+        comThread.write("MDF1:"+mdf1)
+        comThread.write("MDF2:"+mdf2)
+        return PrintMap(robot)
+    except Exception as e:
+        comThread.close()
+        print("Error: ", e)
+        exit()
 
-    elif(FrontSideEmpty(robot)):
-        print "Moving Forward"
-        previousmove = "w"
-        MoveRobot(robot, 1)
-    else:
-        print "Turning Right"
-        previousmove = "d"
-        TurnRobot(robot, "d")
-    mdf1 = mdf.exploreArrayToMDF(EmptyArena)
-    mdf2 = mdf.obstacleArrayToMDF(EmptyArena)
-    print("mdf1:", mdf1)
-    print("mdf2:", mdf2)
-    comThread.write("MDF1:"+mdf1)
-    comThread.write("MDF2:"+mdf2)
-    return PrintMap(robot)
-
-
-
-
-def RunExplore():
-    while(1 == 1):
-        if(CalculateMove() == -1):
-            print "Exploration Completed"
-            return EmptyArena
 robot = ArduinoRobot()
 previousmove = ""
-start = "z"
 comThread = pc_test_socket.Test()
 

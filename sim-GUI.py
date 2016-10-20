@@ -9,7 +9,7 @@ import mdfConvert
 class Simulator:
     def __init__(self, master):
         self.master = master
-        self.canvas = Canvas(self.master, width=680, height=880)
+        self.canvas = Canvas(self.master, width=550, height=660)
         self.canvas.bind("<ButtonRelease>", self.addObstacle)
         self.canvas.pack(side="left")
 
@@ -156,6 +156,7 @@ class Simulator:
         }
         explore.robot = explore.ArduinoRobot()
         explore.previousmove = ""
+        explore.start = "z"
         self.timeCount = 0
 
         self.widgetArray = [[0 for i in range(17)] for j in range(22)]
@@ -172,7 +173,7 @@ class Simulator:
         #Initialise Canvas PaintJob
         for i in range(22):
             for j in range(17):
-                self.widgetArray[i][j] = self.canvas.create_rectangle(0+j*40,0+i*40,40+j*40,40+i*40, fill="grey")
+                self.widgetArray[i][j] = self.canvas.create_rectangle(0+j*30,0+i*30,30+j*30,30+i*30, fill="grey")
 
         for i in range(22):
             self.canvas.itemconfig(self.widgetArray[i][0], fill="red")

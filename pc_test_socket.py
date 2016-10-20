@@ -6,7 +6,7 @@ import time
 
 class Test():
     	def __init__(self):
-		self.ip = "192.168.12.1" # Connecting to IP address of MDPGrp12
+		self.ip = "192.168.12.21" # Connecting to IP address of MDPGrp12
 		self.port = 5182
 
 		# Create a TCP/IP socket
@@ -29,3 +29,7 @@ class Test():
 			else:
 				print("Data received: %s " % data)
 				return data
+
+	def close(self):
+		self.write("quit")
+		self.client_socket.close()
