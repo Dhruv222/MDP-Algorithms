@@ -453,14 +453,15 @@ def CalculateMove():
         mdf2 = mdf.obstacleArrayToMDF(EmptyArena)
         print("mdf1:", mdf1)
         print("mdf2:", mdf2)
-        comThread.write("MDF1:"+mdf1)
-        comThread.write("MDF2:"+mdf2)
+        comThread.write("#MDF1:"+mdf1)
+        time.sleep(0.2)
+        comThread.write("#MDF2:"+mdf2)
         return map
     except Exception as e:
-        comThread.close()
-        print("Error: ", e)
-        exit()
-
+        #comThread.close()
+        #print("Error: ", e)
+        #exit()
+        comThread.write('r')
 robot = ArduinoRobot()
 previousmove = ""
 comThread = pc_test_socket.Test()
