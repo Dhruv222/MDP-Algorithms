@@ -5,7 +5,7 @@ import pc_test_socket
 
 
 EmptyArena=[[0 for i in range(17)] for j in range(22)]
-
+PreviousArena = []
 StartPos = {
     'row':18,
     'col':3
@@ -183,8 +183,10 @@ mulfactor={
 
 def PrintMap(robot):
     printArena = []
+    PreviousArena = []
     for i in range(len(EmptyArena)):
         printArena.append(list(EmptyArena[i]))
+        PreviousArena.append(list(EmptyArena[i]))
     printArena[robot.topRight['row']][robot.topRight['col']] = 6
     printArena[robot.topLeft['row']][robot.topLeft['col']] = 6
     printArena[robot.topCenter['row']][robot.topCenter['col']] = 6
@@ -406,7 +408,17 @@ def FrontSideEmpty(robot):
     else:
         return EmptyArena[robot.topLeft['row']][robot.topLeft['col']-1] != 1 and EmptyArena[robot.topRight['row']][robot.topRight['col']-1] != 1 and EmptyArena[robot.topCenter['row']][robot.topCenter['col']-1] != 1
 
-
+#Add and Remove Obstacles from the android
+def SendDataToAndroid():
+    for i in range(1,21):
+        for j in range(1, 16):
+            if EmptyArena[i][j] != PreviousArena[i][j]:
+                if EmptyArena[i][j] == 1:
+                    comThread.write("add:{},{}".format(i, j))
+                    print "Adding Obstacle to {},{}".format(i, j)
+                elif PreviousArena[i][j] == 1:
+                    comThread.write("remove:{},{}".format(i, j))
+                    print "Removing Obstacle from {},{}".format(i, j)
 
 
 global previousmove
@@ -417,6 +429,13 @@ def CalculateMove():
         if(robot.CurrPos == GoalPos):
             if (GoalPos == StartPos):
                 print "Completed"
+                mdf1 = mdf.ExploreArrayToMDF(EmptyArena)
+                mdf2 = mdf.obstacleArrayToMDF(EmptyArena)
+                print("mdf1:", mdf1)
+                print("mdf2:", mdf2)
+                comThread.write("#MDF1:"+mdf1)
+                time.sleep(0.2)
+                comThread.write("#MDF2:"+mdf2)
                 return -1
             else:
                 print "Reached Goal Position"
@@ -449,13 +468,8 @@ def CalculateMove():
             print "Turning Right"
             previousmove = "d"
             TurnRobot(robot, "d")
-        mdf1 = mdf.ExploreArrayToMDF(EmptyArena)
-        mdf2 = mdf.obstacleArrayToMDF(EmptyArena)
-        print("mdf1:", mdf1)
-        print("mdf2:", mdf2)
-        comThread.write("#MDF1:"+mdf1)
-        time.sleep(0.2)
-        comThread.write("#MDF2:"+mdf2)
+
+        SendDataToAndroid()
         return map
     except Exception as e:
         #comThread.close()
@@ -465,9 +479,3 @@ def CalculateMove():
 robot = ArduinoRobot()
 previousmove = ""
 comThread = pc_test_socket.Test()
-
-# while True:
-#     time.sleep(1)
-#     data = comThread.receive()
-#     if data:
-#         print data
