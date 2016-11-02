@@ -76,13 +76,13 @@ def getSensorArray(orientation, CurrPos):
         'row': CurrPos['row']+1,
         'col': CurrPos['col']
     }
-    
+
     Arena[topRight['row']][topRight['col']] = 4
     Arena[topCenter['row']][topCenter['col']] = 4
     Arena[topLeft['row']][topLeft['col']] = 4
     Arena[bottomRight['row']][bottomRight['col']] = 4
     Arena[bottomLeft['row']][bottomLeft['col']] = 4
-    
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -91,7 +91,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
-    
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -100,7 +100,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
-    
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -109,7 +109,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
-    
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -118,7 +118,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
-    
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -127,7 +127,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
-    
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -136,7 +136,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
-    
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -145,7 +145,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
-    
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -154,7 +154,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
-    
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -163,7 +163,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
-    
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -172,7 +172,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
-    
+
     count = 0
     for i in range(1,MaxSensorMax+1):
         count += 1
@@ -190,7 +190,7 @@ def getSensorArray(orientation, CurrPos):
             break
         elif(i == MaxSensorMax):
             SensorMaxValues.append(0)
-    
+
     SensorAllDirection = [
         ['LeftBehind', 'skip', 'LeftAhead', 'FrontLeft', 'FrontCenter', 'FrontRight', 'RightAhead', 'skip', 'skip', 'skip','skip','skip'],
         ['skip','skip','skip','LeftBehind','skip', 'LeftAhead', 'FrontLeft', 'FrontCenter', 'FrontRight', 'RightAhead','skip','skip'],
@@ -203,7 +203,7 @@ def getSensorArray(orientation, CurrPos):
     SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('FrontCenter')])
     SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('FrontRight')])
     SensorArray.append(SensorMaxValues[SensorAllDirection[orientation].index('RightAhead')])
-        
+
     return SensorArray
 
 def PrintMap():
