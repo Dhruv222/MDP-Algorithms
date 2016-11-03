@@ -229,7 +229,7 @@ def CheckSensor(robot):
 
 def TurnRobot(robot, direction):
 
-    comThread.write(direction)
+    comThread.write('all:'+direction)
     time.sleep(0.1)
     #DataChannel.write("turn "+direction)
     if ( direction == "d"):
@@ -242,7 +242,7 @@ def TurnRobot(robot, direction):
 
 def MoveRobot(robot, blocks):
 
-    comThread.write("w")
+    comThread.write("all:w")
     time.sleep(0.3)
     #DataChannel.write("move "+blocks)
     pastPos = robot.CurrPos
@@ -453,7 +453,7 @@ def CalculateMove():
         global count
         global previousmove
         if (count == 0):
-            comThread.write('e')
+            comThread.write('all:e')
             count+=1
 
         if(robot.CurrPos == GoalPos):
