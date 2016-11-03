@@ -479,9 +479,14 @@ def CalculateMove():
         SendDataToAndroid()
         map = PrintMap(robot)
         if(previousmove == "a"):
-            print "Moving Forward"
-            previousmove = "w"
-            MoveRobot(robot, 1)
+            if FrontSideEmpty(robot):
+                print "Moving Forward"
+                previousmove = "w"
+                MoveRobot(robot, 1)
+            else:
+               print "Turning Right"
+                previousmove = "d"
+                TurnRobot(robot, "d")
         elif(LeftSideEmpty(robot)):
             print "Turning left"
             previousmove = "a"
