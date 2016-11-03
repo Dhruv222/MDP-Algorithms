@@ -302,8 +302,9 @@ def UpdateArena(robot):
     DistanceSensor = SensorMax['LeftAhead'] if SensorData['LeftAhead'] == 0 else SensorData['LeftAhead']
 
     for i in range(1, DistanceSensor):
-        if(EmptyArena[robot.topLeft['row']+mul['row'][0]*i][robot.topLeft['col'] + mul['col'][0]*i] != 2):
-            EmptyArena[robot.topLeft['row']+mul['row'][0]*i][robot.topLeft['col'] + mul['col'][0]*i] = 3
+        if 0<= robot.topLeft['row']+mul['row'][0]*i <= 21 and 0 <= robot.topLeft['col'] + mul['col'][0]*i <= 16:
+            if(EmptyArena[robot.topLeft['row']+mul['row'][0]*i][robot.topLeft['col'] + mul['col'][0]*i] != 2):
+                EmptyArena[robot.topLeft['row']+mul['row'][0]*i][robot.topLeft['col'] + mul['col'][0]*i] = 3
 
     #Prevent Wall Errors
     if(SensorData['LeftAhead'] != 0):
@@ -318,8 +319,9 @@ def UpdateArena(robot):
     DistanceSensor = SensorMax['FrontLeft'] if SensorData['FrontLeft'] == 0 else SensorData['FrontLeft']
 
     for i in range(1, DistanceSensor):
-        if(EmptyArena[robot.topLeft['row']+mul['row'][1]*i][robot.topLeft['col'] + mul['col'][1]*i] != 2):
-            EmptyArena[robot.topLeft['row']+mul['row'][1]*i][robot.topLeft['col'] + mul['col'][1]*i] = 3
+        if 0<= robot.topLeft['row']+mul['row'][1]*i <= 21 and 0 <= robot.topLeft['col'] + mul['col'][1]*i <= 16:
+            if(EmptyArena[robot.topLeft['row']+mul['row'][1]*i][robot.topLeft['col'] + mul['col'][1]*i] != 2):
+                EmptyArena[robot.topLeft['row']+mul['row'][1]*i][robot.topLeft['col'] + mul['col'][1]*i] = 3
 
     #Prevent Wall Errors
     if(SensorData['FrontLeft'] != 0):
@@ -334,8 +336,9 @@ def UpdateArena(robot):
     DistanceSensor = SensorMax['FrontRight'] if SensorData['FrontRight'] == 0 else SensorData['FrontRight']
 
     for i in range(1, DistanceSensor):
-        if(EmptyArena[robot.topRight['row']+mul['row'][1]*i][robot.topRight['col'] + mul['col'][1]*i] != 2):
-            EmptyArena[robot.topRight['row']+mul['row'][1]*i][robot.topRight['col'] + mul['col'][1]*i] = 3
+        if 0<= robot.topRight['row']+mul['row'][1]*i <= 21 and 0 <= robot.topRight['col'] + mul['col'][1]*i <= 16:
+            if(EmptyArena[robot.topRight['row']+mul['row'][1]*i][robot.topRight['col'] + mul['col'][1]*i] != 2):
+                EmptyArena[robot.topRight['row']+mul['row'][1]*i][robot.topRight['col'] + mul['col'][1]*i] = 3
 
     #Prevent Wall Errors
     if(SensorData['FrontRight'] != 0):
@@ -350,8 +353,9 @@ def UpdateArena(robot):
     DistanceSensor = SensorMax['FrontCenter'] if SensorData['FrontCenter'] == 0 else SensorData['FrontCenter']
 
     for i in range(1, DistanceSensor):
-        if(EmptyArena[robot.topCenter['row']+mul['row'][1]*i][robot.topCenter['col'] + mul['col'][1]*i] != 2):
-            EmptyArena[robot.topCenter['row']+mul['row'][1]*i][robot.topCenter['col'] + mul['col'][1]*i] = 3
+        if 0<= robot.topCenter['row']+mul['row'][1]*i <= 21 and 0 <= robot.topCenter['col'] + mul['col'][1]*i <= 16:
+            if(EmptyArena[robot.topCenter['row']+mul['row'][1]*i][robot.topCenter['col'] + mul['col'][1]*i] != 2):
+                EmptyArena[robot.topCenter['row']+mul['row'][1]*i][robot.topCenter['col'] + mul['col'][1]*i] = 3
 
     #Prevent Wall Errors
     if(SensorData['FrontCenter'] != 0):
@@ -366,8 +370,9 @@ def UpdateArena(robot):
     DistanceSensor = SensorMax['RightAhead'] if SensorData['RightAhead'] == 0 else SensorData['RightAhead']
 
     for i in range(1, DistanceSensor):
-        if(EmptyArena[robot.topRight['row']+mul['row'][2]*i][robot.topRight['col'] + mul['col'][2]*i] != 2):
-            EmptyArena[robot.topRight['row']+mul['row'][2]*i][robot.topRight['col'] + mul['col'][2]*i] = 3
+        if 0<= robot.topRight['row']+mul['row'][2]*i <= 21 and 0 <= robot.topRight['col'] + mul['col'][2]*i <= 16:
+            if(EmptyArena[robot.topRight['row']+mul['row'][2]*i][robot.topRight['col'] + mul['col'][2]*i] != 2):
+                EmptyArena[robot.topRight['row']+mul['row'][2]*i][robot.topRight['col'] + mul['col'][2]*i] = 3
 
     #Prevent Wall Errors
     if(SensorData['RightAhead'] != 0):
