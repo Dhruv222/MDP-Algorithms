@@ -2,10 +2,11 @@ import simulator
 import mdfConvert as mdf
 import time
 import pc_test_socket
+import sys
 
 
 EmptyArena=[[0 for i in range(17)] for j in range(22)]
-PreviousArena = []
+PreviousArena = [[0 for i in range(17)] for j in range(22)]
 StartPos = {
     'row':18,
     'col':3
@@ -206,16 +207,16 @@ def PrintMap(robot):
 
 
 def CheckSensor(robot):
-    SensorArray = simulator.getSensorArray(robot.orientation, robot.CurrPos)
-    # print "Checking Sensors"
-    # data = comThread.receive()
-    # if data == 'r':
-    #     print "Sensor said 'start'"
-    #     data = comThread.receive()
-    # print "Sensor Value", data
-    # TryArray = [x for x in data.split(" ")]
-    # TryArray[0] = TryArray[0][-1]
-    # SensorArray = [int(x) for x in TryArray]
+    #SensorArray = simulator.getSensorArray(robot.orientation, robot.CurrPos)
+    print "Checking Sensors"
+    data = comThread.receive()
+    if data == 'e':
+        print "Sensor said 'start'"
+        data = comThread.receive()
+    print "Sensor Value", data
+    #TryArray = [x for x in data.split(" ")]
+    #TryArray[0] = TryArray[0][-1]
+    SensorArray = [int(x) for x in data.split(" ")]
     #SensorData['LeftBehind'] = SensorArray[0]
     SensorData['LeftAhead'] = SensorArray[0]
     SensorData['FrontLeft'] = SensorArray[1]
@@ -226,7 +227,9 @@ def CheckSensor(robot):
 
 
 def TurnRobot(robot, direction):
-    #comThread.write(direction)
+    
+    comThread.write(direction)
+    time.sleep(0.1)
     #DataChannel.write("turn "+direction)
     if ( direction == "d"):
         robot.orientation = (robot.orientation + 1) % 4
@@ -237,7 +240,9 @@ def TurnRobot(robot, direction):
     return
 
 def MoveRobot(robot, blocks):
-    #comThread.write("w")
+    
+    comThread.write("w")
+    time.sleep(0.3)
     #DataChannel.write("move "+blocks)
     pastPos = robot.CurrPos
     if(robot.orientation==0):
@@ -410,14 +415,16 @@ def FrontSideEmpty(robot):
 
 #Add and Remove Obstacles from the android
 def SendDataToAndroid():
-    for i in range(1,21):
-        for j in range(1, 16):
+    for i in range(1,20):
+        for j in range(1, 15):
             if EmptyArena[i][j] != PreviousArena[i][j]:
                 if EmptyArena[i][j] == 1:
-                    comThread.write("add:{},{}".format(i, j))
-                    #print "Adding Obstacle to {},{}".format(i, j)
+                    comThread.write("n7:ADDOBSTACLE:{},{}".format(i, j))
+                    time.sleep(0.1)
+                    print "Adding Obstacle to {},{}".format(i, j)
                 elif PreviousArena[i][j] == 1:
-                    #comThread.write("remove:{},{}".format(i, j))
+                    comThread.write("n7:REMOVEOBSTACLE:{},{}".format(i, j))
+                    time.sleep(0.1)
                     print "Removing Obstacle from {},{}".format(i, j)
 
 
@@ -433,9 +440,10 @@ def CalculateMove():
                 mdf2 = mdf.obstacleArrayToMDF(EmptyArena)
                 print("mdf1:", mdf1)
                 print("mdf2:", mdf2)
-                #comThread.write("#MDF1:"+mdf1)
+                comThread.write("n7:#MDF1:"+mdf1)
                 time.sleep(0.2)
-                #comThread.write("#MDF2:"+mdf2)
+                comThread.write("n7:#MDF2:"+mdf2)
+                time.sleep(0.2)
                 return -1
             else:
                 print "Reached Goal Position"
@@ -473,10 +481,11 @@ def CalculateMove():
 
         return map
     except Exception as e:
-        #comThread.close()
+        comThread.close()
+        print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno))
         print("Error: ", e)
-        #exit()
+        exit()
         comThread.write('r')
 robot = ArduinoRobot()
 previousmove = ""
-#comThread = pc_test_socket.Test()
+comThread = pc_test_socket.Test()
