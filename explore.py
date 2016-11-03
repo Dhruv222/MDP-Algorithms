@@ -228,7 +228,7 @@ def CheckSensor(robot):
 
 
 def TurnRobot(robot, direction):
-    
+
     comThread.write(direction)
     time.sleep(0.1)
     #DataChannel.write("turn "+direction)
@@ -241,7 +241,7 @@ def TurnRobot(robot, direction):
     return
 
 def MoveRobot(robot, blocks):
-    
+
     comThread.write("w")
     time.sleep(0.3)
     #DataChannel.write("move "+blocks)
@@ -428,18 +428,18 @@ def SendDataToAndroid():
                     time.sleep(0.1)
                     print "Removing Obstacle from {},{}".format(i, j)
 
-
-global previousmove
-global count
 count = 0
+previousmove = ""
+
 def CalculateMove():
-    
+
     try:
-        
+        global count
+        global previousmove
         if (count == 0):
             comThread.write('e')
             count+=1
-        global previousmove
+
         if(robot.CurrPos == GoalPos):
             if (GoalPos == StartPos):
                 print "Completed"
@@ -494,5 +494,4 @@ def CalculateMove():
         exit()
         comThread.write('r')
 robot = ArduinoRobot()
-previousmove = ""
 comThread = pc_test_socket.Test()
