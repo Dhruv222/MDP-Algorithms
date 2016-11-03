@@ -420,7 +420,7 @@ def FrontSideEmpty(robot):
         return EmptyArena[robot.topLeft['row']][robot.topLeft['col']-1] != 1 and EmptyArena[robot.topRight['row']][robot.topRight['col']-1] != 1 and EmptyArena[robot.topCenter['row']][robot.topCenter['col']-1] != 1
 
 def LeftSideFull(robot):
-   if(robot.orientation == 0):
+    if(robot.orientation == 0):
         return EmptyArena[robot.topLeft['row']][robot.topLeft['col']-1] == 1 and EmptyArena[robot.bottomLeft['row']][robot.bottomLeft['col']-1] == 1 and EmptyArena[robot.bottomLeft['row'] - 1][robot.bottomLeft['col'] - 1] == 1
     elif(robot.orientation == 1):
         return EmptyArena[robot.topLeft['row']-1][robot.topLeft['col']] == 1 and EmptyArena[robot.bottomLeft['row']-1][robot.bottomLeft['col']] == 1 and EmptyArena[robot.bottomLeft['row'] - 1][robot.bottomLeft['col'] + 1] == 1
@@ -436,12 +436,12 @@ def SendDataToAndroid():
         for j in range(1, 15):
             if EmptyArena[i][j] != PreviousArena[i][j]:
                 if EmptyArena[i][j] == 1:
+                    print EmptyArena[i][j], PreviousArena[i][j]
                     comThread.write("n7:ADDOBSTACLE:{1},{0}".format(i, j))
-                    time.sleep(0.1)
                     print "Adding Obstacle to {1},{0}".format(i, j)
                 elif PreviousArena[i][j] == 1:
+                    print EmptyArena[i][j], PreviousArena[i][j]
                     comThread.write("n7:REMOVEOBSTACLE:{1},{0}".format(i, j))
-                    time.sleep(0.1)
                     print "Removing Obstacle from {1},{0}".format(i, j)
 
 count = 0
@@ -489,7 +489,8 @@ def CalculateMove():
                 previousmove = "w"
                 MoveRobot(robot, 1)
             else:
-               print "Turning Right"
+                
+                print "Turning Right"
                 previousmove = "d"
                 TurnRobot(robot, "d")
         elif(LeftSideEmpty(robot)):
