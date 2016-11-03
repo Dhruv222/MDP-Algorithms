@@ -414,6 +414,17 @@ def FrontSideEmpty(robot):
     else:
         return EmptyArena[robot.topLeft['row']][robot.topLeft['col']-1] != 1 and EmptyArena[robot.topRight['row']][robot.topRight['col']-1] != 1 and EmptyArena[robot.topCenter['row']][robot.topCenter['col']-1] != 1
 
+def LeftSideFull(robot):
+   if(robot.orientation == 0):
+        return EmptyArena[robot.topLeft['row']][robot.topLeft['col']-1] == 1 and EmptyArena[robot.bottomLeft['row']][robot.bottomLeft['col']-1] == 1 and EmptyArena[robot.bottomLeft['row'] - 1][robot.bottomLeft['col'] - 1] == 1
+    elif(robot.orientation == 1):
+        return EmptyArena[robot.topLeft['row']-1][robot.topLeft['col']] == 1 and EmptyArena[robot.bottomLeft['row']-1][robot.bottomLeft['col']] == 1 and EmptyArena[robot.bottomLeft['row'] - 1][robot.bottomLeft['col'] + 1] == 1
+    elif(robot.orientation == 2):
+        return EmptyArena[robot.topLeft['row']][robot.topLeft['col']+1] == 1 and EmptyArena[robot.bottomLeft['row']][robot.bottomLeft['col']+1] == 1 and EmptyArena[robot.bottomLeft['row'] + 1][robot.bottomLeft['col'] + 1] == 1
+    else:
+        return EmptyArena[robot.topLeft['row']+1][robot.topLeft['col']] == 1 and EmptyArena[robot.bottomLeft['row']+1][robot.bottomLeft['col']] == 1 and EmptyArena[robot.bottomLeft['row'] + 1][robot.bottomLeft['col'] - 1] == 1
+
+
 #Add and Remove Obstacles from the android
 def SendDataToAndroid():
     for i in range(1,20):
@@ -484,6 +495,9 @@ def CalculateMove():
             print "Turning Right"
             previousmove = "d"
             TurnRobot(robot, "d")
+
+        if LeftSideFull(robot):
+            comThread.write('m')
 
 
         return map
