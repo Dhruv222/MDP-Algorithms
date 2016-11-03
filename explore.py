@@ -209,10 +209,11 @@ def PrintMap(robot):
 def CheckSensor(robot):
     #SensorArray = simulator.getSensorArray(robot.orientation, robot.CurrPos)
     print "Checking Sensors"
+##    data = comThread.write('e')
+##    if data == 'e':
+##        print "Sensor said 'start'"
+##        data = comThread.receive()
     data = comThread.receive()
-    if data == 'e':
-        print "Sensor said 'start'"
-        data = comThread.receive()
     print "Sensor Value", data
     #TryArray = [x for x in data.split(" ")]
     #TryArray[0] = TryArray[0][-1]
@@ -429,9 +430,15 @@ def SendDataToAndroid():
 
 
 global previousmove
+global count
+count = 0
 def CalculateMove():
+    
     try:
-        count = 0
+        
+        if (count == 0):
+            comThread.write('e')
+            count+=1
         global previousmove
         if(robot.CurrPos == GoalPos):
             if (GoalPos == StartPos):
